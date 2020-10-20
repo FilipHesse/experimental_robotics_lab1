@@ -20,14 +20,30 @@ def pet_command_client():
     counter = 0
     while not rospy.is_shutdown():
 
-        #Each fivth command is play, the other commands are go_to a random place within the range
-        if (counter % 5) == 0:
-            msg = ("play",0,0)  #Values for x and y don't matter
-        else:
-            msg = ("go_to",random.randint(x_min,x_max),random.randint(y_min, y_max))
+        
         try:
             pet_command = rospy.ServiceProxy('pet_command', PetCommand)
-            success, answer_msg = pet_command(msg)
+
+            #Fill the request
+            request = PetCommandRequest()
+            request.header = rospy.Header()
+
+            #Each fivth command is play, the other commands are go_to a random place within the range
+            if (counter % 5) == 0:
+                request.command = "play"
+                request.point.x = 0 #Values for x and y don't matter
+                request.point.y = 0 
+            else:
+                request.command = "go_to"
+                request.point.x = random.randint(x_min,x_max)
+                request.point.y = random.randint(y_min, y_max) 
+            
+            print("{} Sending command: {} x={} y={}".format(rospy.get_rostime(), request.command, request.point.x, request.point.y))
+            res = pet_command(request)
+            if res.success == True:
+                print("Command reached pet successfully")
+            else:
+                print("Pet did not receive command: {}".format(res.explanation))
         except rospy.ServiceException as e:
             print("Service call failed: %s"%e)
 

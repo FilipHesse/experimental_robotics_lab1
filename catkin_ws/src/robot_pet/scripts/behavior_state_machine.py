@@ -1,30 +1,22 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
-# Basic service client inserted
 from __future__ import print_function
 
-import sys
+from robot_pet.srv import PetCommand, PetCommandResponse
 import rospy
-from beginner_tutorials.srv import *
 
-def add_two_ints_client(x, y):
-    rospy.wait_for_service('add_two_ints')
-    try:
-        add_two_ints = rospy.ServiceProxy('add_two_ints', AddTwoInts)
-        resp1 = add_two_ints(x, y)
-        return resp1.sum
-    except rospy.ServiceException as e:
-        print("Service call failed: %s"%e)
+def handle_pet_command(req):
+    print("{} Message received: {} {} {}".format(rospy.get_rostime(), req.command, req.point.x, req.point.y))
+    resp = PetCommandResponse()
+    resp.success = True
+    resp.explanation = ""
+    return resp
 
-def usage():
-    return "%s [x y]"%sys.argv[0]
+def pet_command_server():
+    s = rospy.Service('pet_command', PetCommand, handle_pet_command)
+    print("Ready to receive commands.")
+    rospy.spin()
 
 if __name__ == "__main__":
-    if len(sys.argv) == 3:
-        x = int(sys.argv[1])
-        y = int(sys.argv[2])
-    else:
-        print(usage())
-        sys.exit(1)
-    print("Requesting %s+%s"%(x, y))
-    print("%s + %s = %s"%(x, y, add_two_ints_client(x, y)))
+    rospy.init_node('behavior_state_machine')
+    pet_command_server()
