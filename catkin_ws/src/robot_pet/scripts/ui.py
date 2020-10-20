@@ -6,25 +6,37 @@ from __future__ import print_function
 import sys
 import rospy
 from robot_pet.srv import *
+import random
 
-def add_two_ints_client(x, y):
-    rospy.wait_for_service('add_two_ints')
-    try:
-        add_two_ints = rospy.ServiceProxy('add_two_ints', AddTwoInts)
-        resp1 = add_two_ints(x, y)
-        return resp1.sum
-    except rospy.ServiceException as e:
-        print("Service call failed: %s"%e)
+def pet_command_client():
+    rospy.wait_for_service('pet_command')
 
-def usage():
-    return "%s [x y]"%sys.argv[0]
+    x_min = -100
+    x_max = 100
+
+    y_min = -100
+    y_max = 100
+
+    counter = 0
+    while not rospy.is_shutdown():
+
+        #Each fivth command is play, the other commands are go_to a random place within the range
+        if (counter % 5) == 0:
+            msg = ("play",0,0)  #Values for x and y don't matter
+        else:
+            msg = ("go_to",random.randint(x_min,x_max),random.randint(y_min, y_max))
+        try:
+            pet_command = rospy.ServiceProxy('pet_command', PetCommand)
+            success, answer_msg = pet_command(msg)
+        except rospy.ServiceException as e:
+            print("Service call failed: %s"%e)
+
+        #incement counter
+        counter += 1
+        #Wait for a random time between 0.5 and 5 seconds 
+        waiting_time = random.uniform(0.5, 5)
+        rospy.sleep(waiting_time)
 
 if __name__ == "__main__":
-    if len(sys.argv) == 3:
-        x = int(sys.argv[1])
-        y = int(sys.argv[2])
-    else:
-        print(usage())
-        sys.exit(1)
-    print("Requesting %s+%s"%(x, y))
-    print("%s + %s = %s"%(x, y, add_two_ints_client(x, y)))
+    rospy.init_node('ui')
+    pet_command_client()
