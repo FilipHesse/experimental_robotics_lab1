@@ -1,20 +1,25 @@
 #!/usr/bin/env python
-
-# Basic service Node inserted
-from __future__ import print_function
-
-from beginner_tutorials.srv import AddTwoInts,AddTwoIntsResponse
+# basic publisher inserted
 import rospy
+from std_msgs.msg import String
+from robot_pet.msg import *
 
-def handle_add_two_ints(req):
-    print("Returning [%s + %s = %s]"%(req.a, req.b, (req.a + req.b)))
-    return AddTwoIntsResponse(req.a + req.b)
+def talker():
+    pub = rospy.Publisher('pet_position', Point2d, queue_size=10)
+    rospy.init_node('localizer_and_navigator', anonymous=True)
+    rate = rospy.Rate(10) # 10hz
+    xpos = 2
+    ypos = 3
+    while not rospy.is_shutdown():
+        msg = Point2d()
+        msg.x = xpos
+        msg.y = ypos
+        rospy.loginfo("Publishing x={} y={}".format(msg.x, msg.y))
+        pub.publish(msg)
+        rate.sleep()
 
-def add_two_ints_server():
-    rospy.init_node('add_two_ints_server')
-    s = rospy.Service('add_two_ints', AddTwoInts, handle_add_two_ints)
-    print("Ready to add two ints.")
-    rospy.spin()
-
-if __name__ == "__main__":
-    add_two_ints_server()
+if __name__ == '__main__':
+    try:
+        talker()
+    except rospy.ROSInterruptException:
+        pass
