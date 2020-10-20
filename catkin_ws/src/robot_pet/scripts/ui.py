@@ -9,6 +9,7 @@ from robot_pet.srv import *
 import random
 
 def pet_command_client():
+    rospy.loginfo("Wait for service pet_command to be available")
     rospy.wait_for_service('pet_command')
 
     x_min = -100
@@ -19,8 +20,6 @@ def pet_command_client():
 
     counter = 0
     while not rospy.is_shutdown():
-
-        
         try:
             pet_command = rospy.ServiceProxy('pet_command', PetCommand)
 
@@ -38,14 +37,14 @@ def pet_command_client():
                 request.point.x = random.randint(x_min,x_max)
                 request.point.y = random.randint(y_min, y_max) 
             
-            print("{} Sending command: {} x={} y={}".format(rospy.get_rostime(), request.command, request.point.x, request.point.y))
+            rospy.loginfo("Sending command: {} x={} y={}".format(request.command, request.point.x, request.point.y))
             res = pet_command(request)
             if res.success == True:
-                print("Command reached pet successfully")
+                rospy.loginfo("Command reached pet successfully")
             else:
-                print("Pet did not receive command: {}".format(res.explanation))
+                rospy.loginfo("Pet did not receive command: {}".format(res.explanation))
         except rospy.ServiceException as e:
-            print("Service call failed: %s"%e)
+            rospy.loginfo("Service call failed: %s"%e)
 
         #incement counter
         counter += 1

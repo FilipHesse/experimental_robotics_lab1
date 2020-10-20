@@ -6,7 +6,7 @@ from robot_pet.srv import PetCommand, PetCommandResponse
 import rospy
 
 def handle_pet_command(req):
-    print("{} Message received: {} {} {}".format(rospy.get_rostime(), req.command, req.point.x, req.point.y))
+    rospy.loginfo("Message received: {} {} {}".format(req.command, req.point.x, req.point.y))
     resp = PetCommandResponse()
     resp.success = True
     resp.explanation = ""
@@ -14,7 +14,7 @@ def handle_pet_command(req):
 
 def pet_command_server():
     s = rospy.Service('pet_command', PetCommand, handle_pet_command)
-    print("Ready to receive commands.")
+    rospy.loginfo("Ready to receive commands.")
     rospy.spin()
 
 if __name__ == "__main__":
