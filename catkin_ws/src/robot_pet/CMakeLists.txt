@@ -161,12 +161,12 @@ include_directories(
 ## in contrast to setup.py, you can choose the destination
 catkin_install_python(PROGRAMS
   scripts/ui.py
-  scripts/locator_navigator.py
+  scripts/localizer_navigator.py
   scripts/map.py
   scripts/user_localizer.py
   scripts/behavior_state_machine.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-# )
+)
 
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
