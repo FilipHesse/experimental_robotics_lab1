@@ -11,7 +11,7 @@ from robot_pet.msg import SetTargetPositionAction, SetTargetPositionActionFeedba
 class ActionServer():
 
     def __init__(self):
-        self.a_server = actionlib.SimpleActionServer("set_target_position_as", SetTargetPositionAction, execute_cb==self.execute_cb, auto_start==False)
+        self.a_server = actionlib.SimpleActionServer("set_target_position_as", SetTargetPositionAction, execute_cb=self.execute_cb, auto_start=False)
         self.pub = rospy.Publisher('pet_position', Point2d, queue_size=10)
         self.a_server.start()
 

@@ -31,8 +31,8 @@ def pet_command_client():
                 request.point.y = 0 
             else:
                 request.command = "go_to"
-                request.point.x = random.randint(map_width)
-                request.point.y = random.randint(map_height) 
+                request.point.x = random.randint(0,map_width)
+                request.point.y = random.randint(0,map_height) 
             
             rospy.loginfo("Sending command: {} x={} y={}".format(request.command, request.point.x, request.point.y))
             res = pet_command(request)

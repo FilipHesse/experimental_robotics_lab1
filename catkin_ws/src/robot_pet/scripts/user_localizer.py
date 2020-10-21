@@ -7,7 +7,7 @@ from robot_pet.msg import *
 def talker():
     pub = rospy.Publisher('user_position', Point2d, queue_size=10)
     rospy.init_node('user_localizer')
-    rate = rospy.Rate(10) # 10hz
+    rate = rospy.Rate(1) # 10hz
     xpos = 5
     ypos = 7
     while not rospy.is_shutdown():
