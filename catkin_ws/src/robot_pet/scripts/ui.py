@@ -12,11 +12,8 @@ def pet_command_client():
     rospy.loginfo("Wait for service pet_command to be available")
     rospy.wait_for_service('pet_command')
 
-    x_min = -100
-    x_max = 100
-
-    y_min = -100
-    y_max = 100
+    x_max = 10
+    y_max = 10
 
     counter = 0
     while not rospy.is_shutdown():
@@ -34,8 +31,8 @@ def pet_command_client():
                 request.point.y = 0 
             else:
                 request.command = "go_to"
-                request.point.x = random.randint(x_min,x_max)
-                request.point.y = random.randint(y_min, y_max) 
+                request.point.x = random.randint(x_max)
+                request.point.y = random.randint(y_max) 
             
             rospy.loginfo("Sending command: {} x={} y={}".format(request.command, request.point.x, request.point.y))
             res = pet_command(request)
