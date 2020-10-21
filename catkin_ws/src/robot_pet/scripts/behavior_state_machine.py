@@ -6,6 +6,8 @@ from robot_pet.srv import PetCommand, PetCommandResponse, GetPosition, GetPositi
 from robot_pet.msg import SetTargetPositionAction, SetTargetPositionGoal, SetTargetPositionResult
 import rospy
 import actionlib
+import smach
+
 
 def handle_pet_command(req):
     rospy.loginfo("Message received: {} {} {}".format(req.command, req.point.x, req.point.y))
@@ -61,6 +63,43 @@ def set_target_client():
 def callback_done(state, result):
     rospy.loginfo("Action server is done. State: %s" % (str(state)))
 
+########################################################
+## STATE MACHINE CODE
+#######################################################
+
+# define state Foo
+class Normal(smach.State):
+    def __init__(self):
+        smach.State.__init__(self, outcomes=['cmd_play','sleeping_time'])
+        self.counter = 0
+
+    def execute(self, userdata):
+        rospy.loginfo('Executing state Normal')
+        #if self.counter < 3:
+        #    self.counter += 1
+        #    return 'outcome1'
+        #else:
+        #    return 'outcome2'
+
+
+# define state Bar
+class Sleep(smach.State):
+    def __init__(self):
+        smach.State.__init__(self, outcomes=['slept_enough'])
+
+    def execute(self, userdata):
+        rospy.loginfo('Executing state Sleep')
+        #return 'outcome2'
+
+# define state Bar
+class Play(smach.State):
+    def __init__(self):
+        smach.State.__init__(self, outcomes=['played_enough','sleeping_time'])
+
+    def execute(self, userdata):
+        rospy.loginfo('Executing state Play')
+        #return 'outcome2'
+
 
 
 if __name__ == "__main__":
@@ -68,4 +107,28 @@ if __name__ == "__main__":
     get_position_client()
     pet_command_server()
     set_target_client()
+
+    rospy.init_node('smach_example_state_machine')
+
+    # Create a SMACH state machine
+    sm = smach.StateMachine(outcomes=['outcome4', 'outcome5'])
+
+    # Open the container
+    with sm:
+        # Add states to the container
+        smach.StateMachine.add('NORMAL', Normal(), 
+                               transitions={'cmd_play':'PLAY', 
+                                            'sleeping_time':'SLEEP'})
+
+        smach.StateMachine.add('SLEEP', Sleep(), 
+                               transitions={'slept_enough':'NORMAL'})
+
+        smach.StateMachine.add('PLAY', Play(), 
+                               transitions={'played_enough':'NORMAL',
+                                            'sleeping_time':'SLEEP' })
+
+    # Execute SMACH plan
+    outcome = sm.execute()
+
+    # MOVE THIS INTO STATES!
     rospy.spin()
