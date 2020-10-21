@@ -1,30 +1,37 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
-#basic service client inserted
 from __future__ import print_function
 
-import sys
+from robot_pet.srv import GetPosition, GetPositionResponse
 import rospy
-from beginner_tutorials.srv import *
 
-def add_two_ints_client(x, y):
-    rospy.wait_for_service('add_two_ints')
-    try:
-        add_two_ints = rospy.ServiceProxy('add_two_ints', AddTwoInts)
-        resp1 = add_two_ints(x, y)
-        return resp1.sum
-    except rospy.ServiceException as e:
-        print("Service call failed: %s"%e)
+#define xlobal variables
+positions = {
+    "person": [0, 1],
+    "house": [2, 3],
+    "pet": [4, 5]
+}
 
-def usage():
-    return "%s [x y]"%sys.argv[0]
+def handle_get_position(req):
+    rospy.loginfo("Position of {} requested".format(req.object))
+    resp = GetPositionResponse()
+    if req.object in positions:
+        resp.success = True
+        resp.point.x = positions[req.object][0]
+        resp.point.y = positions[req.object][1]
+        rospy.loginfo("Returning x={} y={}".format(resp.point.x, resp.point.y))
+    else:
+        rospy.loginfo("Object {} does not exist in dataset! Available objects are: {}".format(req.object, positions.keys()))
+        resp.success = False
+        resp.point.x = 0
+        resp.point.y = 0  
+    return resp
+
+def pet_command_server():
+    s = rospy.Service('get_position', GetPosition, handle_get_position)
+    rospy.loginfo("Position server ready")
+    rospy.spin()
 
 if __name__ == "__main__":
-    if len(sys.argv) == 3:
-        x = int(sys.argv[1])
-        y = int(sys.argv[2])
-    else:
-        print(usage())
-        sys.exit(1)
-    print("Requesting %s+%s"%(x, y))
-    print("%s + %s = %s"%(x, y, add_two_ints_client(x, y)))
+    rospy.init_node('map')
+    pet_command_server()
