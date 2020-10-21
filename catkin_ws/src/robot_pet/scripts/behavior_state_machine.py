@@ -20,7 +20,7 @@ def pet_command_server():
 def get_position_client():
     rospy.loginfo("Wait for service get_position to be available")
     rospy.wait_for_service('get_position')
-    object_list = ["person", "house", "pet", "banana"]
+    object_list = ["user", "house", "pet", "banana"]
     for obj in object_list:
         try:
             get_position = rospy.ServiceProxy('get_position', GetPosition)
