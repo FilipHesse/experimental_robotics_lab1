@@ -2,25 +2,34 @@
 # basic publisher inserted
 import rospy
 import actionlib
-from std_msgs.msg import String
+import random
 from robot_pet.msg import *
 
-def talker():
-    pub = rospy.Publisher('pet_position', Point2d, queue_size=10)
-    rospy.init_node('localizer_and_navigator', anonymous=True)
-    rate = rospy.Rate(10) # 10hz
-    xpos = 2
-    ypos = 3
-    while not rospy.is_shutdown():
+from robot_pet.msg import SetTargetPositionAction, SetTargetPositionActionFeedback, SetTargetPositionActionResult
+
+
+class ActionServer():
+
+    def __init__(self):
+        self.a_server = actionlib.SimpleActionServer("set_target_position_as", SetTargetPositionAction, execute_cb==self.execute_cb, auto_start==False)
+        self.pub = rospy.Publisher('pet_position', Point2d, queue_size=10)
+        self.a_server.start()
+
+    def execute_cb(self, goal):
+        #Wait for a random time between 1 and 5 seconds 
+        waiting_time = random.uniform(1, 5)
+        rospy.sleep(waiting_time)
+        #Server does not send intermediate feedback nor a result, just the flag that its done
+        self.a_server.set_succeeded()
+
         msg = Point2d()
-        msg.x = xpos
-        msg.y = ypos
+        msg.x = goal.target.x
+        msg.y = goal.target.y
         rospy.loginfo("Publishing x={} y={}".format(msg.x, msg.y))
-        pub.publish(msg)
-        rate.sleep()
+        self.pub.publish(msg)
+
 
 if __name__ == '__main__':
-    try:
-        talker()
-    except rospy.ROSInterruptException:
-        pass
+    rospy.init_node('localizer_and_navigator')
+    s = ActionServer()
+    talker()
