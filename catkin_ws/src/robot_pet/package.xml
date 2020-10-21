@@ -58,8 +58,10 @@
   <exec_depend>roscpp</exec_depend>
   <exec_depend>rospy</exec_depend>
   <exec_depend>std_msgs</exec_depend>
+  <exec_depend>rqt_image_view</exec_depend>
   <depend>message_runtime</depend>
   <build_depend>message_generation</build_depend>
+  <build_depend>acitionlib_msgs</build_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->

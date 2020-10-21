@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # basic publisher inserted
 import rospy
+import actionlib
 from std_msgs.msg import String
 from robot_pet.msg import *
 

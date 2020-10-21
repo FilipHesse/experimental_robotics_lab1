@@ -1,0 +1,7 @@
+#Goal
+robot_pet/Point2d target
+---
+#Result
+bool done
+---
+#Feedback
