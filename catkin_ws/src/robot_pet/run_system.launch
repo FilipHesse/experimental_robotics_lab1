@@ -1,0 +1,13 @@
+<launch>
+
+  <param name="map_width" type="int" value="15" />
+  <param name="map_height" type="int" value="10" />
+
+  <node pkg="robot_pet" name="ui" type="ui.py" output="screen"></node>
+  <node pkg="robot_pet" name="user_localizer" type="user_localizer.py" output="screen"></node>
+  <node pkg="robot_pet" name="behavior_state_machine" type="behavior_state_machine.py" output="screen"></node>
+  <node pkg="robot_pet" name="map" type="map.py" output="screen"></node>
+  <node pkg="robot_pet" name="localizer_navigator" type="localizer_navigator.py" output="screen"></node>
+
+  <node pkg="rqt_image_view" name="rqt_image_view" type="rqt_image_view"></node>
+</launch>

@@ -18,12 +18,12 @@ from cv_bridge import CvBridge, CvBridgeError
 class map_node:
     def __init__(self):
 
-        self.x_max = 10
-        self.y_max = 10
+        self.map_width = rospy.get_param("/map_width")
+        self.map_height = rospy.get_param("/map_height")
 
         self.positions = {
             "user": [0, 1],
-            "house": [2, 3],
+            "house": [0, 0],
             "pet": [4, 5]
         }
 
@@ -56,11 +56,10 @@ class map_node:
         return resp
 
     def publish_map(self):
-        map_image = np.ones((self.y_max, self.x_max,3), np.uint8) #White map
+        map_image = 255*np.ones((self.map_height, self.map_width,3), np.uint8) #White map
         map_image[self.positions["user"][1],  self.positions["user"][0]] = (255,0,0)   #User in Blue
         map_image[self.positions["house"][1], self.positions["house"][0]] = (0,255,0)   #house in Green
         map_image[self.positions["pet"][1],   self.positions["pet"][0]] = (0,0,255)   #Pet in Red
-        rospy.loginfo(str(map_image))
         self.pub.publish((self.bridge.cv2_to_imgmsg(map_image, "bgr8")))
 
     def callback_pet_position(self, data):
