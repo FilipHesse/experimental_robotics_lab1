@@ -40,6 +40,9 @@ class map_node:
         #initialize publishers
         self.pub = rospy.Publisher('map', Image, queue_size=1)
 
+        #Publish initial map
+        self.publish_map()
+
     def handle_get_position(self, req):
         rospy.loginfo("Position of {} requested".format(req.object))
         resp = GetPositionResponse()
@@ -63,14 +66,16 @@ class map_node:
         self.pub.publish((self.bridge.cv2_to_imgmsg(map_image, "bgr8")))
 
     def callback_pet_position(self, data):
-        self.positions["pet"] = [data.x, data.y]
-        rospy.loginfo("New pet position: x={} y={}".format(self.positions["pet"][0], self.positions["pet"][1]))
-        self.publish_map()
+        if not self.positions["pet"] == [data.x, data.y]:
+            self.positions["pet"] = [data.x, data.y]
+            rospy.loginfo("New pet position: x={} y={}".format(self.positions["pet"][0], self.positions["pet"][1]))
+            self.publish_map()
 
     def callback_user_position(self, data):
-        self.positions["user"] = [data.x, data.y]
-        rospy.loginfo("New user position: x={} y={}".format(self.positions["user"][0], self.positions["user"][1]))
-        self.publish_map()
+        if not self.positions["user"] == [data.x, data.y]:
+            self.positions["user"] = [data.x, data.y]
+            rospy.loginfo("New user position: x={} y={}".format(self.positions["user"][0], self.positions["user"][1]))
+            self.publish_map()
 
 if __name__ == "__main__":
     rospy.init_node('map')

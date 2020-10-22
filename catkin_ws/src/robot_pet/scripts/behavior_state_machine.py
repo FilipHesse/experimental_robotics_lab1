@@ -87,6 +87,22 @@ class SetTargetActionClient():
         rospy.loginfo("Action server is done. State: %s" % (str(state)))
         self.ready_for_new_target = True
 
+class SleepingTimer():
+    def __init__(self):
+        self.sleeping_time_range = (10, 15)  #Sleep between 10 and 15 seconds
+        self.awake_time_range = (20, 30)  #Be awake for ...
+        self.time_to_sleep = False
+        self.timer = rospy.Timer(rospy.Duration(random.uniform(*self.awake_time_range)), self.callback, oneshot=True)
+
+    def callback(self):
+        self.time_to_sleep = not self.time_to_sleep
+
+        if self.time_to_sleep:
+            rospy.loginfo("It's time to go to bed!")
+            self.timer = rospy.Timer(rospy.Duration(random.uniform(*self.sleeping_time_range)), self.callback, oneshot=True)
+        else:
+            rospy.loginfo("It's time to wake up!")
+            self.timer = rospy.Timer(rospy.Duration(random.uniform(*self.awake_time_range)), self.callback, oneshot=True)
 ########################################################
 ## STATE MACHINE CODE
 #######################################################

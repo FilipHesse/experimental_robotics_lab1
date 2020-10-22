@@ -25,7 +25,7 @@ class ActionServer():
         msg = Point2d()
         msg.x = goal.target.x
         msg.y = goal.target.y
-        rospy.loginfo("Publishing x={} y={}".format(msg.x, msg.y))
+        rospy.logdebug("Publishing x={} y={}".format(msg.x, msg.y))
         self.pub.publish(msg)
 
 
