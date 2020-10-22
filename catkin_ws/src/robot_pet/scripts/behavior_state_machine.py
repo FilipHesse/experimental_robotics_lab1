@@ -2,23 +2,33 @@
 
 from __future__ import print_function
 
-from robot_pet.srv import PetCommand, PetCommandResponse, GetPosition, GetPositionRequest
+from robot_pet.srv import PetCommand, PetCommandResponse, PetCommandRequest, GetPosition, GetPositionRequest
 from robot_pet.msg import SetTargetPositionAction, SetTargetPositionGoal, SetTargetPositionResult
 import rospy
 import actionlib
 import smach
+import random
 
 class PetCommandServer:
     def __init__(self):
-        s = rospy.Service('pet_command', PetCommand, self.handle_command)
+        rospy.Service('pet_command', PetCommand, self.handle_command)
         rospy.loginfo("Ready to receive commands.")
+        self._new_command_available = False 
+        self._command = PetCommandRequest()    #Make variables private, so that get_new_command() has to be used
 
     def handle_command(self, req):
         rospy.loginfo("Message received: {} {} {}".format(req.command, req.point.x, req.point.y))
-        resp = PetCommandResponse()
-        resp.success = True
-        resp.explanation = ""
+        self._command = req
+        self._new_command_available = True
         return resp
+
+    def is_new_command_available(self):
+        return._new_command_available
+
+    # interface for state machine to check for new commands
+    def get_new_command(self, req):
+        self._new_command_available = False
+        return self._command
 
 
 
@@ -55,24 +65,27 @@ class GetPositionClient():
 
 class SetTargetActionClient():
     def __init__(self):
-        pass
+        self.ready_for_new_target = True
+        self.client = actionlib.SimpleActionClient('set_target_position_as', SetTargetPositionAction)
 
     def call_action(self): #TODO add parameter!
-        client = actionlib.SimpleActionClient('set_target_position_as', SetTargetPositionAction)
+
         
         rospy.loginfo("Waiting for action server to come up...")
-        client.wait_for_server()
+        self.client.wait_for_server()
 
         goal = SetTargetPositionGoal()
+        self.ready_for_new_target = False
         goal.target.x = 2
         goal.target.y = 2
-        client.send_goal(goal,
+        self.client.send_goal(goal,
                         done_cb=self.callback_done)
 
         rospy.loginfo("Goal has been sent to the action server.")
 
     def callback_done(self, state, result):
         rospy.loginfo("Action server is done. State: %s" % (str(state)))
+        self.ready_for_new_target = True
 
 ########################################################
 ## STATE MACHINE CODE
@@ -80,15 +93,33 @@ class SetTargetActionClient():
 
 # define state Foo
 class Normal(smach.State):
-    def __init__(self):
+    def __init__(self, set_target_action_client, pet_command_server):
         smach.State.__init__(self, outcomes=['cmd_play','sleeping_time'])
-        self.counter = 0
+        self.set_target_action_client = set_target_action_client
+        self.pet_command_server = pet_command_server
+        self.map_width = rospy.get_param("/map_width")
+        self.map_height = rospy.get_param("/map_height")
+
+        #Define Service call in here
+        s = rospy.Service('pet_command', PetCommand, self.handle_command)
+        rospy.loginfo("Ready to receive commands.")
 
     def execute(self, userdata):
         rospy.loginfo('Executing state Normal')
-        rospy.Rate(5)
+        rate = rospy.Rate(10)
         while True:
-            pass
+            if self.pet_command_server.is_new_command_available():
+                #Process Command
+            
+            if self.set_target_action_client.ready_for_new_target:
+                next_x = random.randint(0,self.map_width)
+                next_y = random.randint(0,self.map_height) 
+                self.set_target_action_client.call_action(next_x, next_y)
+            
+            # Dont do anything until Target position is reached
+            if not self.set_target_action_client.ready_for_new_target
+                rate.sleep()
+
 
 
 
@@ -129,7 +160,7 @@ if __name__ == "__main__":
     # Open the container
     with sm:
         # Add states to the container
-        smach.StateMachine.add('NORMAL', Normal(), 
+        smach.StateMachine.add('NORMAL', Normal(set_target_action_client, pet_command_server), 
                                transitions={'cmd_play':'PLAY', 
                                             'sleeping_time':'SLEEP'})
 

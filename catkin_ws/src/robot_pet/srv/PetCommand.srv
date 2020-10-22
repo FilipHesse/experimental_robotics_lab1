@@ -2,5 +2,3 @@ Header header
 string command 
 robot_pet/Point2d point
 ---
-bool success
-string explanation
