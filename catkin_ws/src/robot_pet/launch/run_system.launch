@@ -10,4 +10,5 @@
   <node pkg="robot_pet" name="localizer_navigator" type="localizer_navigator.py" output="screen"></node>
 
   <node pkg="rqt_image_view" name="rqt_image_view" type="rqt_image_view"></node>
+  <node pkg="rqt_console" name="rqt_console" type="rqt_console"></node>
 </launch>

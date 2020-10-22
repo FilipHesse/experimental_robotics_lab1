@@ -14,7 +14,7 @@ def talker():
         msg = Point2d()
         msg.x = xpos
         msg.y = ypos
-        rospy.loginfo("Publishing x={} y={}".format(msg.x, msg.y))
+        rospy.logdebug("Publishing x={} y={}".format(msg.x, msg.y))
         pub.publish(msg)
         rate.sleep()
 
