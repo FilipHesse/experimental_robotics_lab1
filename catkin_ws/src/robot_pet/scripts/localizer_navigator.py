@@ -19,14 +19,21 @@ class ActionServer():
         #Wait for a random time between 1 and 5 seconds 
         waiting_time = random.uniform(1, 5)
         rospy.sleep(waiting_time)
-        #Server does not send intermediate feedback nor a result, just the flag that its done
-        self.a_server.set_succeeded()
+
 
         msg = Point2d()
         msg.x = goal.target.x
         msg.y = goal.target.y
+
+        res = SetTargetPositionResult()
+        res.final_position.x = msg.x
+        res.final_position.y = msg.y
+
         rospy.logdebug("Publishing x={} y={}".format(msg.x, msg.y))
         self.pub.publish(msg)
+
+        #Server does not send intermediate feedback just a result and the flag that its done
+        self.a_server.set_succeeded(res)
 
 
 if __name__ == '__main__':

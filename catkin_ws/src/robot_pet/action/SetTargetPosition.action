@@ -1,6 +1,7 @@
 #Goal
 robot_pet/Point2d target
 ---
-#Result -> being done is send via set_succeed
+#Result
+robot_pet/Point2d final_position
 ---
 #Feedback

@@ -79,7 +79,7 @@ class SetTargetActionClient():
         rospy.loginfo("Goal (x={}, y={}) has been sent to the action server.".format(goal.target.x, goal.target.y))
 
     def callback_done(self, state, result):
-        rospy.loginfo("SetTargetAction is done, position reached. Action state: %s" % (str(state)))
+        rospy.loginfo("SetTargetAction is done, position x={} y={} reached. Action state: {}".format(result.final_position.x, result.final_position.y, state))
         self.ready_for_new_target = True
 
 
@@ -163,7 +163,7 @@ class Sleep(smach.State):
         rate = rospy.Rate(10)
         
         # Robot might still be moving => wait until last target reached
-        while self.set_target_action_client.ready_for_new_target:
+        while not self.set_target_action_client.ready_for_new_target:
             rate.sleep()
         
         #Get position of house
@@ -236,10 +236,20 @@ class Play(smach.State):
 
             #Go To Target
             set_target_action_client.call_action(x,y)
+            
+            #Wait until position reached
+            while not self.set_target_action_client.ready_for_new_target:
+                rate.sleep()
+
             #Get Persons Position
             x,y = get_position_client.call_srv("user")
+            
             #Go To Person
             set_target_action_client.call_action(x,y)
+            
+            #Wait until position reached
+            while not self.set_target_action_client.ready_for_new_target:
+                rate.sleep()
             #Check if time to sleep
             if self.sleeping_timer.time_to_sleep:
                 rospy.loginfo("I am tired. Good night!")
