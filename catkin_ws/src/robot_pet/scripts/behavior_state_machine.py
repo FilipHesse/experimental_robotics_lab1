@@ -17,7 +17,7 @@ class PetCommandServer:
         self._command = PetCommandRequest()    #Make variables private, so that get_new_command() has to be used
 
     def handle_command(self, req):
-        rospy.loginfo("Message received: {} {} {}".format(req.command, req.point.x, req.point.y))
+        rospy.loginfo("Command received: {} {} {}".format(req.command, req.point.x, req.point.y))
         self._command = req
         self._new_command_available = True
         return PetCommandResponse()
@@ -76,10 +76,10 @@ class SetTargetActionClient():
         self.client.send_goal(goal,
                         done_cb=self.callback_done)
 
-        rospy.loginfo("Goal has been sent to the action server.")
+        rospy.loginfo("Goal (x={}, y={}) has been sent to the action server.".format(goal.target.x, goal.target.y))
 
     def callback_done(self, state, result):
-        rospy.loginfo("Action server is done. State: %s" % (str(state)))
+        rospy.loginfo("SetTargetAction is done, position reached. Action state: %s" % (str(state)))
         self.ready_for_new_target = True
 
 
@@ -172,10 +172,11 @@ class Sleep(smach.State):
         #Set new target: house
         set_target_action_client.call_action(x,y)
 
-        #If target reached: just wait until wake-up flag is set
+        #just wait until wake-up flag is set
         while True:
-            # Ignore user commands -> Get the commands to consider command as hadeled
+            
             if self.pet_command_server.is_new_command_available():
+                # Ignore user commands -> Get the commands to consider command as hadeled
                 cmd = self.pet_command_server.get_new_command()
                 rospy.loginfo("Command is ignored, because Robot is sleeping")
 
@@ -196,7 +197,60 @@ class Play(smach.State):
 
     def execute(self, userdata):
         rospy.loginfo('--- ENTERING STATE PLAY ---')
-        return 'played_enough'
+        rate = rospy.Rate(10)
+
+        games_to_play = random.randint(1,3)
+
+        number_games = 0
+        while True:
+            number_games += 1
+            #Get Persons Position
+            x,y = get_position_client.call_srv("user")
+            #Go To Person
+            set_target_action_client.call_action(x,y)
+            #Wait until position reached
+            while not self.set_target_action_client.ready_for_new_target:
+                rate.sleep()
+            
+            #Discard all previous commands
+            if self.pet_command_server.is_new_command_available():
+                # Ignore user commands -> Get the commands to consider command as hadeled
+                cmd = self.pet_command_server.get_new_command()
+                rospy.loginfo("Previous commands were ignored, because robot was not ready to receive commands")
+            
+            valid_target = False
+            #Check commands until a valid one comes in (go to)
+            while not valid_target:
+                #Wait for command
+                while not self.pet_command_server.is_new_command_available():
+                    rate.sleep()
+
+                cmd = self.pet_command_server.get_new_command()
+                if cmd.command == 'play':
+                    rospy.loginfo("Robot is already playing")
+
+                if cmd.command =='go_to':
+                    valid_target = True
+                    x = cmd.point.x
+                    y = cmd.point.y
+
+            #Go To Target
+            set_target_action_client.call_action(x,y)
+            #Get Persons Position
+            x,y = get_position_client.call_srv("user")
+            #Go To Person
+            set_target_action_client.call_action(x,y)
+            #Check if time to sleep
+            if self.sleeping_timer.time_to_sleep:
+                rospy.loginfo("I am tired. Good night!")
+                return 'sleeping_time'
+
+            #Check if played enough
+            if games_to_play == number_games:
+                rospy.loginfo("I played {} games. This is enough".format(number_games))
+                return 'played_enough'
+
+            rate.sleep()
 
 
 
@@ -225,6 +279,7 @@ if __name__ == "__main__":
         smach.StateMachine.add('PLAY', Play(get_position_client, pet_command_server, set_target_action_client, sleeping_timer), 
                                transitions={'played_enough':'NORMAL',
                                             'sleeping_time':'SLEEP' })
+
 
     # Execute SMACH plan
     outcome = sm_top.execute()
