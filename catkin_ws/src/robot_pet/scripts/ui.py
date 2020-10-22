@@ -9,7 +9,7 @@ from robot_pet.srv import *
 import random
 
 def pet_command_client():
-    rospy.loginfo("Wait for service pet_command to be available")
+    rospy.logdebug("Wait for service pet_command to be available")
     rospy.wait_for_service('pet_command')
 
     map_width = rospy.get_param("/map_width")
@@ -31,22 +31,19 @@ def pet_command_client():
                 request.point.y = 0 
             else:
                 request.command = "go_to"
-                request.point.x = random.randint(0,map_width)
-                request.point.y = random.randint(0,map_height) 
+                request.point.x = random.randint(0,map_width-1)
+                request.point.y = random.randint(0,map_height-1) 
             
-            rospy.loginfo("Sending command: {} x={} y={}".format(request.command, request.point.x, request.point.y))
+            rospy.loginfo("User sending command: {} x={} y={}".format(request.command, request.point.x, request.point.y))
             res = pet_command(request)
-            if res.success == True:
-                rospy.loginfo("Command reached pet successfully")
-            else:
-                rospy.loginfo("Pet did not receive command: {}".format(res.explanation))
+            
         except rospy.ServiceException as e:
             rospy.loginfo("Service call failed: %s"%e)
 
         #incement counter
         counter += 1
         #Wait for a random time between 0.5 and 5 seconds 
-        waiting_time = random.uniform(0.5, 5)
+        waiting_time = random.uniform(3, 10)
         rospy.sleep(waiting_time)
 
 if __name__ == "__main__":

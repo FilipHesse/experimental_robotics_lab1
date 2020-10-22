@@ -32,4 +32,3 @@ class ActionServer():
 if __name__ == '__main__':
     rospy.init_node('localizer_and_navigator')
     s = ActionServer()
-    talker()

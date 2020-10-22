@@ -20,10 +20,10 @@ class PetCommandServer:
         rospy.loginfo("Message received: {} {} {}".format(req.command, req.point.x, req.point.y))
         self._command = req
         self._new_command_available = True
-        return resp
+        return PetCommandResponse()
 
     def is_new_command_available(self):
-        return._new_command_available
+        return self._new_command_available
 
     # interface for state machine to check for new commands
     def get_new_command(self, req):
@@ -68,7 +68,7 @@ class SetTargetActionClient():
         self.ready_for_new_target = True
         self.client = actionlib.SimpleActionClient('set_target_position_as', SetTargetPositionAction)
 
-    def call_action(self): #TODO add parameter!
+    def call_action(self, x, y): #TODO add parameter!
 
         
         rospy.loginfo("Waiting for action server to come up...")
@@ -76,8 +76,8 @@ class SetTargetActionClient():
 
         goal = SetTargetPositionGoal()
         self.ready_for_new_target = False
-        goal.target.x = 2
-        goal.target.y = 2
+        goal.target.x = x
+        goal.target.y = y
         self.client.send_goal(goal,
                         done_cb=self.callback_done)
 
@@ -100,24 +100,22 @@ class Normal(smach.State):
         self.map_width = rospy.get_param("/map_width")
         self.map_height = rospy.get_param("/map_height")
 
-        #Define Service call in here
-        s = rospy.Service('pet_command', PetCommand, self.handle_command)
-        rospy.loginfo("Ready to receive commands.")
 
     def execute(self, userdata):
-        rospy.loginfo('Executing state Normal')
+        rospy.loginfo('--- ENTERING STATE NORMAL ---')
         rate = rospy.Rate(10)
         while True:
             if self.pet_command_server.is_new_command_available():
                 #Process Command
+                pass
             
             if self.set_target_action_client.ready_for_new_target:
-                next_x = random.randint(0,self.map_width)
-                next_y = random.randint(0,self.map_height) 
+                next_x = random.randint(0,self.map_width-1)
+                next_y = random.randint(0,self.map_height-1) 
                 self.set_target_action_client.call_action(next_x, next_y)
             
             # Dont do anything until Target position is reached
-            if not self.set_target_action_client.ready_for_new_target
+            if not self.set_target_action_client.ready_for_new_target:
                 rate.sleep()
 
 
@@ -152,7 +150,7 @@ if __name__ == "__main__":
 
     # Call them without parameters for testing
     get_position_client.call_srv()
-    set_target_action_client.call_action()
+    #set_target_action_client.call_action()
 
     # Create a SMACH state machine
     sm = smach.StateMachine(outcomes=['outcome4', 'outcome5'])
