@@ -1,0 +1,177 @@
+\hypertarget{classbehavior__state__machine_1_1_play}{}\doxysection{behavior\+\_\+state\+\_\+machine.\+Play Class Reference}
+\label{classbehavior__state__machine_1_1_play}\index{behavior\_state\_machine.Play@{behavior\_state\_machine.Play}}
+
+
+Inheritance diagram for behavior\+\_\+state\+\_\+machine.\+Play\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=241pt]{classbehavior__state__machine_1_1_play__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for behavior\+\_\+state\+\_\+machine.\+Play\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=241pt]{classbehavior__state__machine_1_1_play__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{classbehavior__state__machine_1_1_play_ae0f6d228a2837c867028b669fc5081b7}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, \mbox{\hyperlink{classbehavior__state__machine_1_1_play_a60c356e9c1f54b6175c6adb8cde0fc96}{get\+\_\+position\+\_\+client}}, \mbox{\hyperlink{classbehavior__state__machine_1_1_play_a81bb4e1326d50a866fa9c06c23168af5}{pet\+\_\+command\+\_\+server}}, \mbox{\hyperlink{classbehavior__state__machine_1_1_play_a51a2263cef01e8b4b4fb485f0a1ef6cf}{set\+\_\+target\+\_\+action\+\_\+client}}, \mbox{\hyperlink{classbehavior__state__machine_1_1_play_a2a3ee9d1a9dff54e413ee0cff94b1926}{sleeping\+\_\+timer}})
+\item 
+def \mbox{\hyperlink{classbehavior__state__machine_1_1_play_a62c058c869e527f580549ba49e6bf4b8}{execute}} (self, userdata)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classbehavior__state__machine_1_1_play_a60c356e9c1f54b6175c6adb8cde0fc96}{get\+\_\+position\+\_\+client}}
+\item 
+\mbox{\hyperlink{classbehavior__state__machine_1_1_play_a81bb4e1326d50a866fa9c06c23168af5}{pet\+\_\+command\+\_\+server}}
+\item 
+\mbox{\hyperlink{classbehavior__state__machine_1_1_play_a51a2263cef01e8b4b4fb485f0a1ef6cf}{set\+\_\+target\+\_\+action\+\_\+client}}
+\item 
+\mbox{\hyperlink{classbehavior__state__machine_1_1_play_a2a3ee9d1a9dff54e413ee0cff94b1926}{sleeping\+\_\+timer}}
+\item 
+\mbox{\hyperlink{classbehavior__state__machine_1_1_play_aee2238f08821edeb565e4bcfbd1a0e50}{pub}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Defines the Smach-state PLAY
+
+In this state the robot performs the following actions in a loop:
+1) Go to user
+2) Wait for a command that specifies a new target
+3) Go to new target
+Repeat
+
+The game is repeated for a randum number of times between 1 and 3
+
+Attributes:
+    get_position_client (GetPositionClient): Service client to get position of an object
+    pet_command_server (PetCommandServer): Allows accessing the last command from the user
+    set_target_action_client (SetTargetActionClient): Action client to set a new target position
+    sleeping_timer (SleepingTimer): Allows checking if it is time to sleep
+    pub (rospy.Publisher()): A publisher to publish the pointer positions. This publisher is
+        defined inside this state because it is not needed in any other state
+\end{DoxyVerb}
+ 
+
+Definition at line 389 of file behavior\+\_\+state\+\_\+machine.\+py.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classbehavior__state__machine_1_1_play_ae0f6d228a2837c867028b669fc5081b7}\label{classbehavior__state__machine_1_1_play_ae0f6d228a2837c867028b669fc5081b7}} 
+\index{behavior\_state\_machine.Play@{behavior\_state\_machine.Play}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!behavior\_state\_machine.Play@{behavior\_state\_machine.Play}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily def behavior\+\_\+state\+\_\+machine.\+Play.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{get\+\_\+position\+\_\+client,  }\item[{}]{pet\+\_\+command\+\_\+server,  }\item[{}]{set\+\_\+target\+\_\+action\+\_\+client,  }\item[{}]{sleeping\+\_\+timer }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Initializes attributes and reads ros parameters (width, height)
+
+Args:
+    get_position_client (GetPositionClient): See class description
+    pet_command_server (PetCommandServer): See class description
+    set_target_action_client (SetTargetActionClient): See class description
+    sleeping_timer (SleepingTimer): See class description
+\end{DoxyVerb}
+ 
+
+Definition at line 408 of file behavior\+\_\+state\+\_\+machine.\+py.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classbehavior__state__machine_1_1_play_a62c058c869e527f580549ba49e6bf4b8}\label{classbehavior__state__machine_1_1_play_a62c058c869e527f580549ba49e6bf4b8}} 
+\index{behavior\_state\_machine.Play@{behavior\_state\_machine.Play}!execute@{execute}}
+\index{execute@{execute}!behavior\_state\_machine.Play@{behavior\_state\_machine.Play}}
+\doxysubsubsection{\texorpdfstring{execute()}{execute()}}
+{\footnotesize\ttfamily def behavior\+\_\+state\+\_\+machine.\+Play.\+execute (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{userdata }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Executes play mode
+
+In this state the robot performs the following actions in a loop:
+1) Go to user
+2) Wait for a command that specifies a new target
+3) Go to new target 
+4) Go back to person
+
+This function implements these steps and braks them down into smaller
+substeps Details can be viewed inside the code, which is commented. It
+is only checked at the end of each game (after going back to the
+person), if it is time to go to sleep or if the number of games to be
+played (random between 1 and 3) has been reached.
+
+Args:
+    userdata (---): unused
+
+Returns:
+    string: Outcomes of this state: "played_enough" or "sleeping_time"
+\end{DoxyVerb}
+ 
+
+Definition at line 424 of file behavior\+\_\+state\+\_\+machine.\+py.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classbehavior__state__machine_1_1_play_a60c356e9c1f54b6175c6adb8cde0fc96}\label{classbehavior__state__machine_1_1_play_a60c356e9c1f54b6175c6adb8cde0fc96}} 
+\index{behavior\_state\_machine.Play@{behavior\_state\_machine.Play}!get\_position\_client@{get\_position\_client}}
+\index{get\_position\_client@{get\_position\_client}!behavior\_state\_machine.Play@{behavior\_state\_machine.Play}}
+\doxysubsubsection{\texorpdfstring{get\_position\_client}{get\_position\_client}}
+{\footnotesize\ttfamily behavior\+\_\+state\+\_\+machine.\+Play.\+get\+\_\+position\+\_\+client}
+
+
+
+Definition at line 418 of file behavior\+\_\+state\+\_\+machine.\+py.
+
+\mbox{\Hypertarget{classbehavior__state__machine_1_1_play_a81bb4e1326d50a866fa9c06c23168af5}\label{classbehavior__state__machine_1_1_play_a81bb4e1326d50a866fa9c06c23168af5}} 
+\index{behavior\_state\_machine.Play@{behavior\_state\_machine.Play}!pet\_command\_server@{pet\_command\_server}}
+\index{pet\_command\_server@{pet\_command\_server}!behavior\_state\_machine.Play@{behavior\_state\_machine.Play}}
+\doxysubsubsection{\texorpdfstring{pet\_command\_server}{pet\_command\_server}}
+{\footnotesize\ttfamily behavior\+\_\+state\+\_\+machine.\+Play.\+pet\+\_\+command\+\_\+server}
+
+
+
+Definition at line 419 of file behavior\+\_\+state\+\_\+machine.\+py.
+
+\mbox{\Hypertarget{classbehavior__state__machine_1_1_play_aee2238f08821edeb565e4bcfbd1a0e50}\label{classbehavior__state__machine_1_1_play_aee2238f08821edeb565e4bcfbd1a0e50}} 
+\index{behavior\_state\_machine.Play@{behavior\_state\_machine.Play}!pub@{pub}}
+\index{pub@{pub}!behavior\_state\_machine.Play@{behavior\_state\_machine.Play}}
+\doxysubsubsection{\texorpdfstring{pub}{pub}}
+{\footnotesize\ttfamily behavior\+\_\+state\+\_\+machine.\+Play.\+pub}
+
+
+
+Definition at line 422 of file behavior\+\_\+state\+\_\+machine.\+py.
+
+\mbox{\Hypertarget{classbehavior__state__machine_1_1_play_a51a2263cef01e8b4b4fb485f0a1ef6cf}\label{classbehavior__state__machine_1_1_play_a51a2263cef01e8b4b4fb485f0a1ef6cf}} 
+\index{behavior\_state\_machine.Play@{behavior\_state\_machine.Play}!set\_target\_action\_client@{set\_target\_action\_client}}
+\index{set\_target\_action\_client@{set\_target\_action\_client}!behavior\_state\_machine.Play@{behavior\_state\_machine.Play}}
+\doxysubsubsection{\texorpdfstring{set\_target\_action\_client}{set\_target\_action\_client}}
+{\footnotesize\ttfamily behavior\+\_\+state\+\_\+machine.\+Play.\+set\+\_\+target\+\_\+action\+\_\+client}
+
+
+
+Definition at line 420 of file behavior\+\_\+state\+\_\+machine.\+py.
+
+\mbox{\Hypertarget{classbehavior__state__machine_1_1_play_a2a3ee9d1a9dff54e413ee0cff94b1926}\label{classbehavior__state__machine_1_1_play_a2a3ee9d1a9dff54e413ee0cff94b1926}} 
+\index{behavior\_state\_machine.Play@{behavior\_state\_machine.Play}!sleeping\_timer@{sleeping\_timer}}
+\index{sleeping\_timer@{sleeping\_timer}!behavior\_state\_machine.Play@{behavior\_state\_machine.Play}}
+\doxysubsubsection{\texorpdfstring{sleeping\_timer}{sleeping\_timer}}
+{\footnotesize\ttfamily behavior\+\_\+state\+\_\+machine.\+Play.\+sleeping\+\_\+timer}
+
+
+
+Definition at line 421 of file behavior\+\_\+state\+\_\+machine.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/robot\+\_\+pet/scripts/\mbox{\hyperlink{behavior__state__machine_8py}{behavior\+\_\+state\+\_\+machine.\+py}}\end{DoxyCompactItemize}

@@ -1,0 +1,127 @@
+\hypertarget{classbehavior__state__machine_1_1_sleeping_timer}{}\doxysection{behavior\+\_\+state\+\_\+machine.\+Sleeping\+Timer Class Reference}
+\label{classbehavior__state__machine_1_1_sleeping_timer}\index{behavior\_state\_machine.SleepingTimer@{behavior\_state\_machine.SleepingTimer}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{classbehavior__state__machine_1_1_sleeping_timer_afcb1860f4b7c15f56f12a057ab8a4eb8}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self)
+\item 
+def \mbox{\hyperlink{classbehavior__state__machine_1_1_sleeping_timer_a9401ab46d6a260a0539d115a7bd742cf}{callback}} (self, msg)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classbehavior__state__machine_1_1_sleeping_timer_af855259769a58cd1babf8dae078f4052}{sleeping\+\_\+time\+\_\+range}}
+\item 
+\mbox{\hyperlink{classbehavior__state__machine_1_1_sleeping_timer_adf6fe4716d8a586675c9c7de999650f3}{awake\+\_\+time\+\_\+range}}
+\item 
+\mbox{\hyperlink{classbehavior__state__machine_1_1_sleeping_timer_a02fee1f1e358d0cb409fbdaa3fded3e3}{time\+\_\+to\+\_\+sleep}}
+\item 
+\mbox{\hyperlink{classbehavior__state__machine_1_1_sleeping_timer_af51947b791fa1190ce29eb64fd1bff04}{timer}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Timer Class, that schedules the sleeping times
+
+Contains a timer running in one-shot-mode. This allows to define different
+times for sleeping and being awake each time the timer has elapsed
+
+Usage: Check the flag time_to_sleep to check if robot should be sleeping
+right now or if it should be awake
+
+Attributes:
+    sleeping_time_range ((int, int)): Sleeping time will be random between 10
+        and 15 seconds
+    awake_time_range  ((int, int)): Awake time will be random between 20 and 30 seconds
+    time_to_sleep (bool): Flag for the user of this class to check if its time to sleep
+        (True) or time to be awake (False)
+    timer (rospy.Timer): Timer that triggers the callbacks
+\end{DoxyVerb}
+ 
+
+Definition at line 199 of file behavior\+\_\+state\+\_\+machine.\+py.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classbehavior__state__machine_1_1_sleeping_timer_afcb1860f4b7c15f56f12a057ab8a4eb8}\label{classbehavior__state__machine_1_1_sleeping_timer_afcb1860f4b7c15f56f12a057ab8a4eb8}} 
+\index{behavior\_state\_machine.SleepingTimer@{behavior\_state\_machine.SleepingTimer}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!behavior\_state\_machine.SleepingTimer@{behavior\_state\_machine.SleepingTimer}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily def behavior\+\_\+state\+\_\+machine.\+Sleeping\+Timer.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Initialize attributes
+\end{DoxyVerb}
+ 
+
+Definition at line 216 of file behavior\+\_\+state\+\_\+machine.\+py.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classbehavior__state__machine_1_1_sleeping_timer_a9401ab46d6a260a0539d115a7bd742cf}\label{classbehavior__state__machine_1_1_sleeping_timer_a9401ab46d6a260a0539d115a7bd742cf}} 
+\index{behavior\_state\_machine.SleepingTimer@{behavior\_state\_machine.SleepingTimer}!callback@{callback}}
+\index{callback@{callback}!behavior\_state\_machine.SleepingTimer@{behavior\_state\_machine.SleepingTimer}}
+\doxysubsubsection{\texorpdfstring{callback()}{callback()}}
+{\footnotesize\ttfamily def behavior\+\_\+state\+\_\+machine.\+Sleeping\+Timer.\+callback (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{msg }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Get called when self.timer has elapsed
+
+Toggles the flag time_to_sleep and restarts the timer with appropriate
+random time
+
+Args:
+    msg (??): unused
+\end{DoxyVerb}
+ 
+
+Definition at line 224 of file behavior\+\_\+state\+\_\+machine.\+py.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classbehavior__state__machine_1_1_sleeping_timer_adf6fe4716d8a586675c9c7de999650f3}\label{classbehavior__state__machine_1_1_sleeping_timer_adf6fe4716d8a586675c9c7de999650f3}} 
+\index{behavior\_state\_machine.SleepingTimer@{behavior\_state\_machine.SleepingTimer}!awake\_time\_range@{awake\_time\_range}}
+\index{awake\_time\_range@{awake\_time\_range}!behavior\_state\_machine.SleepingTimer@{behavior\_state\_machine.SleepingTimer}}
+\doxysubsubsection{\texorpdfstring{awake\_time\_range}{awake\_time\_range}}
+{\footnotesize\ttfamily behavior\+\_\+state\+\_\+machine.\+Sleeping\+Timer.\+awake\+\_\+time\+\_\+range}
+
+
+
+Definition at line 220 of file behavior\+\_\+state\+\_\+machine.\+py.
+
+\mbox{\Hypertarget{classbehavior__state__machine_1_1_sleeping_timer_af855259769a58cd1babf8dae078f4052}\label{classbehavior__state__machine_1_1_sleeping_timer_af855259769a58cd1babf8dae078f4052}} 
+\index{behavior\_state\_machine.SleepingTimer@{behavior\_state\_machine.SleepingTimer}!sleeping\_time\_range@{sleeping\_time\_range}}
+\index{sleeping\_time\_range@{sleeping\_time\_range}!behavior\_state\_machine.SleepingTimer@{behavior\_state\_machine.SleepingTimer}}
+\doxysubsubsection{\texorpdfstring{sleeping\_time\_range}{sleeping\_time\_range}}
+{\footnotesize\ttfamily behavior\+\_\+state\+\_\+machine.\+Sleeping\+Timer.\+sleeping\+\_\+time\+\_\+range}
+
+
+
+Definition at line 219 of file behavior\+\_\+state\+\_\+machine.\+py.
+
+\mbox{\Hypertarget{classbehavior__state__machine_1_1_sleeping_timer_a02fee1f1e358d0cb409fbdaa3fded3e3}\label{classbehavior__state__machine_1_1_sleeping_timer_a02fee1f1e358d0cb409fbdaa3fded3e3}} 
+\index{behavior\_state\_machine.SleepingTimer@{behavior\_state\_machine.SleepingTimer}!time\_to\_sleep@{time\_to\_sleep}}
+\index{time\_to\_sleep@{time\_to\_sleep}!behavior\_state\_machine.SleepingTimer@{behavior\_state\_machine.SleepingTimer}}
+\doxysubsubsection{\texorpdfstring{time\_to\_sleep}{time\_to\_sleep}}
+{\footnotesize\ttfamily behavior\+\_\+state\+\_\+machine.\+Sleeping\+Timer.\+time\+\_\+to\+\_\+sleep}
+
+
+
+Definition at line 221 of file behavior\+\_\+state\+\_\+machine.\+py.
+
+\mbox{\Hypertarget{classbehavior__state__machine_1_1_sleeping_timer_af51947b791fa1190ce29eb64fd1bff04}\label{classbehavior__state__machine_1_1_sleeping_timer_af51947b791fa1190ce29eb64fd1bff04}} 
+\index{behavior\_state\_machine.SleepingTimer@{behavior\_state\_machine.SleepingTimer}!timer@{timer}}
+\index{timer@{timer}!behavior\_state\_machine.SleepingTimer@{behavior\_state\_machine.SleepingTimer}}
+\doxysubsubsection{\texorpdfstring{timer}{timer}}
+{\footnotesize\ttfamily behavior\+\_\+state\+\_\+machine.\+Sleeping\+Timer.\+timer}
+
+
+
+Definition at line 222 of file behavior\+\_\+state\+\_\+machine.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/robot\+\_\+pet/scripts/\mbox{\hyperlink{behavior__state__machine_8py}{behavior\+\_\+state\+\_\+machine.\+py}}\end{DoxyCompactItemize}

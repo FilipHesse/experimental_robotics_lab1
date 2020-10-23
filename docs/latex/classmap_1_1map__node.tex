@@ -1,0 +1,348 @@
+\hypertarget{classmap_1_1map__node}{}\doxysection{map.\+map\+\_\+node Class Reference}
+\label{classmap_1_1map__node}\index{map.map\_node@{map.map\_node}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{classmap_1_1map__node_a7853c23bedeaf7ddb838ec831cc853f9}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self)
+\item 
+def \mbox{\hyperlink{classmap_1_1map__node_a30eccc65ef63b343b2b240216ff559d6}{handle\+\_\+get\+\_\+position}} (self, req)
+\item 
+def \mbox{\hyperlink{classmap_1_1map__node_a531a11d9ab16754f5a3fe6db03886949}{publish\+\_\+map}} (self)
+\item 
+def \mbox{\hyperlink{classmap_1_1map__node_afba4d54c306e5612d91c6aa36d6d2b3a}{draw\+\_\+icon}} (self, icon)
+\item 
+def \mbox{\hyperlink{classmap_1_1map__node_aafca985f16addd6881dc2623b554a8b5}{callback\+\_\+pet\+\_\+position}} (self, data)
+\item 
+def \mbox{\hyperlink{classmap_1_1map__node_a28017da635fabaf988058763db2fb55c}{callback\+\_\+user\+\_\+position}} (self, data)
+\item 
+def \mbox{\hyperlink{classmap_1_1map__node_ab12d7a490e8fd1dd8d2532db9cc12172}{callback\+\_\+pointer\+\_\+position}} (self, data)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classmap_1_1map__node_a27d64ba4e0fb6365fa4e01f6696bac31}{map\+\_\+width}}
+\item 
+\mbox{\hyperlink{classmap_1_1map__node_a7d48f8b791e79901ba9d397e60653474}{map\+\_\+height}}
+\item 
+\mbox{\hyperlink{classmap_1_1map__node_ae401bb4974e10600fbecde4511193865}{icon\+\_\+size}}
+\item 
+\mbox{\hyperlink{classmap_1_1map__node_a7f0172bb4af2738f97e388d53dccb342}{positions}}
+\item 
+\mbox{\hyperlink{classmap_1_1map__node_abbfcd48420dec5bd0837ac4a41cf417c}{icons}}
+\item 
+\mbox{\hyperlink{classmap_1_1map__node_a8996cdd030399df57759cbc2d8c66af0}{pointer\+\_\+on}}
+\item 
+\mbox{\hyperlink{classmap_1_1map__node_afb16c4ccdcb1a7987374db26f910f10a}{bridge}}
+\item 
+\mbox{\hyperlink{classmap_1_1map__node_a139e95e0f68e0c823eb1580f31d6f7dd}{pos\+\_\+serv}}
+\item 
+\mbox{\hyperlink{classmap_1_1map__node_a732f6610dbee38b94a66805086ef33da}{sub\+\_\+pet}}
+\item 
+\mbox{\hyperlink{classmap_1_1map__node_a5405df0d4f9d85cf7d7e808c87c68c91}{sub\+\_\+user}}
+\item 
+\mbox{\hyperlink{classmap_1_1map__node_a87ee6744f6da7a02d9c4fc7a24a8f031}{sub\+\_\+pointer}}
+\item 
+\mbox{\hyperlink{classmap_1_1map__node_a0fe2fbea44c6891c9c2471115dc507a9}{pub}}
+\item 
+\mbox{\hyperlink{classmap_1_1map__node_a22c79e4523f535e9413e1fc48ef002af}{map\+\_\+image}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}A ROS node that contains 3 subsribers, one server and a publisher
+
+The three subscribers subscribe to the variable positions of the objects in
+the map: user, pet, pointer
+
+The server provides the service get_position to the ros environment.
+
+The publisher publishes an image of the current map each time the map is
+updated.
+
+The image can be observed with the node rqt_image_view/rqt_image_view.
+
+Attributes:
+    map_width (int): Width of the rectangular map
+    map_height (int): Height of the rectangular map
+    icon_size (int): Size of the icons of the objects in the map: 32 
+    positions (dict): Dictionary which contains the positions (list 
+        of x and y) of all the objects present in the map
+    icons (dict): Dictionary which contains the icons (array)
+        of all the objects present in the map
+    pointer_on (bool): Should the pointer position be diplayed?
+    bridge (CvBridge): Bridge to create a ros image from a cv2 image
+        This is necessary for publishing images in ros.
+    pos_serv (rospy.Service): Server for get_position service
+    sub_pet (rospy.Subscriber): Subscriber subscribes to pet position
+    sub_user (rospy.Subscriber): Subscriber subscribes to user position
+    sub_pointer (rospy.Subscriber): Subscriber subscribes to pointer position
+    pub (rospy.Publisher): Publishes image of map
+\end{DoxyVerb}
+ 
+
+Definition at line 36 of file map.\+py.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classmap_1_1map__node_a7853c23bedeaf7ddb838ec831cc853f9}\label{classmap_1_1map__node_a7853c23bedeaf7ddb838ec831cc853f9}} 
+\index{map.map\_node@{map.map\_node}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!map.map\_node@{map.map\_node}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily def map.\+map\+\_\+node.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Initializes the attributes
+\end{DoxyVerb}
+ 
+
+Definition at line 67 of file map.\+py.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classmap_1_1map__node_aafca985f16addd6881dc2623b554a8b5}\label{classmap_1_1map__node_aafca985f16addd6881dc2623b554a8b5}} 
+\index{map.map\_node@{map.map\_node}!callback\_pet\_position@{callback\_pet\_position}}
+\index{callback\_pet\_position@{callback\_pet\_position}!map.map\_node@{map.map\_node}}
+\doxysubsubsection{\texorpdfstring{callback\_pet\_position()}{callback\_pet\_position()}}
+{\footnotesize\ttfamily def map.\+map\+\_\+node.\+callback\+\_\+pet\+\_\+position (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{data }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Callback function gets called when somethin was written to the topic pet_position
+
+If position is different from the saved position: Save it and publish the updated map
+
+Args:
+    data (robot_pet/Point2d): Position of the pet 
+\end{DoxyVerb}
+ 
+
+Definition at line 178 of file map.\+py.
+
+\mbox{\Hypertarget{classmap_1_1map__node_ab12d7a490e8fd1dd8d2532db9cc12172}\label{classmap_1_1map__node_ab12d7a490e8fd1dd8d2532db9cc12172}} 
+\index{map.map\_node@{map.map\_node}!callback\_pointer\_position@{callback\_pointer\_position}}
+\index{callback\_pointer\_position@{callback\_pointer\_position}!map.map\_node@{map.map\_node}}
+\doxysubsubsection{\texorpdfstring{callback\_pointer\_position()}{callback\_pointer\_position()}}
+{\footnotesize\ttfamily def map.\+map\+\_\+node.\+callback\+\_\+pointer\+\_\+position (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{data }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Callback function gets called when somethin was written to the topic pointer_position
+
+Save position and the flag if the pointer should be displayed. Then publish the updated map
+
+Args:
+    data (robot_pet/Point2dOnOff): Position of the pointer and flag if it should be displayed or not 
+\end{DoxyVerb}
+ 
+
+Definition at line 204 of file map.\+py.
+
+\mbox{\Hypertarget{classmap_1_1map__node_a28017da635fabaf988058763db2fb55c}\label{classmap_1_1map__node_a28017da635fabaf988058763db2fb55c}} 
+\index{map.map\_node@{map.map\_node}!callback\_user\_position@{callback\_user\_position}}
+\index{callback\_user\_position@{callback\_user\_position}!map.map\_node@{map.map\_node}}
+\doxysubsubsection{\texorpdfstring{callback\_user\_position()}{callback\_user\_position()}}
+{\footnotesize\ttfamily def map.\+map\+\_\+node.\+callback\+\_\+user\+\_\+position (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{data }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Callback function gets called when somethin was written to the topic user_position
+
+If position is different from the saved position: Save it and publish the updated map
+
+Args:
+    data (robot_pet/Point2d): Position of the user
+\end{DoxyVerb}
+ 
+
+Definition at line 191 of file map.\+py.
+
+\mbox{\Hypertarget{classmap_1_1map__node_afba4d54c306e5612d91c6aa36d6d2b3a}\label{classmap_1_1map__node_afba4d54c306e5612d91c6aa36d6d2b3a}} 
+\index{map.map\_node@{map.map\_node}!draw\_icon@{draw\_icon}}
+\index{draw\_icon@{draw\_icon}!map.map\_node@{map.map\_node}}
+\doxysubsubsection{\texorpdfstring{draw\_icon()}{draw\_icon()}}
+{\footnotesize\ttfamily def map.\+map\+\_\+node.\+draw\+\_\+icon (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{icon }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Draws an icon on the map
+
+To draw an icon with black on white background, the function np.minimum is used.
+The positions of the icon are taken from the attributes of this class.
+
+Args:
+    icon (string): String of the icon, that should be drawed
+\end{DoxyVerb}
+ 
+
+Definition at line 150 of file map.\+py.
+
+\mbox{\Hypertarget{classmap_1_1map__node_a30eccc65ef63b343b2b240216ff559d6}\label{classmap_1_1map__node_a30eccc65ef63b343b2b240216ff559d6}} 
+\index{map.map\_node@{map.map\_node}!handle\_get\_position@{handle\_get\_position}}
+\index{handle\_get\_position@{handle\_get\_position}!map.map\_node@{map.map\_node}}
+\doxysubsubsection{\texorpdfstring{handle\_get\_position()}{handle\_get\_position()}}
+{\footnotesize\ttfamily def map.\+map\+\_\+node.\+handle\+\_\+get\+\_\+position (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{req }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Handles Service call get_position
+
+Args:
+    req (string): Contains a string with the object of interest
+Possible strings are "user", "house", "pet", "pointer"
+
+Returns:
+    GetPositionResponse: Contains a success flag to tell if the requested
+object could be found in the map. If the Object could be found, then
+its x and y position are also returned
+\end{DoxyVerb}
+ 
+
+Definition at line 110 of file map.\+py.
+
+\mbox{\Hypertarget{classmap_1_1map__node_a531a11d9ab16754f5a3fe6db03886949}\label{classmap_1_1map__node_a531a11d9ab16754f5a3fe6db03886949}} 
+\index{map.map\_node@{map.map\_node}!publish\_map@{publish\_map}}
+\index{publish\_map@{publish\_map}!map.map\_node@{map.map\_node}}
+\doxysubsubsection{\texorpdfstring{publish\_map()}{publish\_map()}}
+{\footnotesize\ttfamily def map.\+map\+\_\+node.\+publish\+\_\+map (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Creates an image of the map and publishes it
+
+The map can only represent integer positions. The integer dimensions defined in the ros
+parameter server. The image of the map contains a 32x32 pixel square for each position.
+
+This function simply creates a white rectangle of dimensions width*32 x height*32 and draws
+icons at the positions, which are saved in the membervariables
+\end{DoxyVerb}
+ 
+
+Definition at line 136 of file map.\+py.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classmap_1_1map__node_afb16c4ccdcb1a7987374db26f910f10a}\label{classmap_1_1map__node_afb16c4ccdcb1a7987374db26f910f10a}} 
+\index{map.map\_node@{map.map\_node}!bridge@{bridge}}
+\index{bridge@{bridge}!map.map\_node@{map.map\_node}}
+\doxysubsubsection{\texorpdfstring{bridge}{bridge}}
+{\footnotesize\ttfamily map.\+map\+\_\+node.\+bridge}
+
+
+
+Definition at line 93 of file map.\+py.
+
+\mbox{\Hypertarget{classmap_1_1map__node_ae401bb4974e10600fbecde4511193865}\label{classmap_1_1map__node_ae401bb4974e10600fbecde4511193865}} 
+\index{map.map\_node@{map.map\_node}!icon\_size@{icon\_size}}
+\index{icon\_size@{icon\_size}!map.map\_node@{map.map\_node}}
+\doxysubsubsection{\texorpdfstring{icon\_size}{icon\_size}}
+{\footnotesize\ttfamily map.\+map\+\_\+node.\+icon\+\_\+size}
+
+
+
+Definition at line 74 of file map.\+py.
+
+\mbox{\Hypertarget{classmap_1_1map__node_abbfcd48420dec5bd0837ac4a41cf417c}\label{classmap_1_1map__node_abbfcd48420dec5bd0837ac4a41cf417c}} 
+\index{map.map\_node@{map.map\_node}!icons@{icons}}
+\index{icons@{icons}!map.map\_node@{map.map\_node}}
+\doxysubsubsection{\texorpdfstring{icons}{icons}}
+{\footnotesize\ttfamily map.\+map\+\_\+node.\+icons}
+
+
+
+Definition at line 84 of file map.\+py.
+
+\mbox{\Hypertarget{classmap_1_1map__node_a7d48f8b791e79901ba9d397e60653474}\label{classmap_1_1map__node_a7d48f8b791e79901ba9d397e60653474}} 
+\index{map.map\_node@{map.map\_node}!map\_height@{map\_height}}
+\index{map\_height@{map\_height}!map.map\_node@{map.map\_node}}
+\doxysubsubsection{\texorpdfstring{map\_height}{map\_height}}
+{\footnotesize\ttfamily map.\+map\+\_\+node.\+map\+\_\+height}
+
+
+
+Definition at line 72 of file map.\+py.
+
+\mbox{\Hypertarget{classmap_1_1map__node_a22c79e4523f535e9413e1fc48ef002af}\label{classmap_1_1map__node_a22c79e4523f535e9413e1fc48ef002af}} 
+\index{map.map\_node@{map.map\_node}!map\_image@{map\_image}}
+\index{map\_image@{map\_image}!map.map\_node@{map.map\_node}}
+\doxysubsubsection{\texorpdfstring{map\_image}{map\_image}}
+{\footnotesize\ttfamily map.\+map\+\_\+node.\+map\+\_\+image}
+
+
+
+Definition at line 145 of file map.\+py.
+
+\mbox{\Hypertarget{classmap_1_1map__node_a27d64ba4e0fb6365fa4e01f6696bac31}\label{classmap_1_1map__node_a27d64ba4e0fb6365fa4e01f6696bac31}} 
+\index{map.map\_node@{map.map\_node}!map\_width@{map\_width}}
+\index{map\_width@{map\_width}!map.map\_node@{map.map\_node}}
+\doxysubsubsection{\texorpdfstring{map\_width}{map\_width}}
+{\footnotesize\ttfamily map.\+map\+\_\+node.\+map\+\_\+width}
+
+
+
+Definition at line 71 of file map.\+py.
+
+\mbox{\Hypertarget{classmap_1_1map__node_a8996cdd030399df57759cbc2d8c66af0}\label{classmap_1_1map__node_a8996cdd030399df57759cbc2d8c66af0}} 
+\index{map.map\_node@{map.map\_node}!pointer\_on@{pointer\_on}}
+\index{pointer\_on@{pointer\_on}!map.map\_node@{map.map\_node}}
+\doxysubsubsection{\texorpdfstring{pointer\_on}{pointer\_on}}
+{\footnotesize\ttfamily map.\+map\+\_\+node.\+pointer\+\_\+on}
+
+
+
+Definition at line 91 of file map.\+py.
+
+\mbox{\Hypertarget{classmap_1_1map__node_a139e95e0f68e0c823eb1580f31d6f7dd}\label{classmap_1_1map__node_a139e95e0f68e0c823eb1580f31d6f7dd}} 
+\index{map.map\_node@{map.map\_node}!pos\_serv@{pos\_serv}}
+\index{pos\_serv@{pos\_serv}!map.map\_node@{map.map\_node}}
+\doxysubsubsection{\texorpdfstring{pos\_serv}{pos\_serv}}
+{\footnotesize\ttfamily map.\+map\+\_\+node.\+pos\+\_\+serv}
+
+
+
+Definition at line 96 of file map.\+py.
+
+\mbox{\Hypertarget{classmap_1_1map__node_a7f0172bb4af2738f97e388d53dccb342}\label{classmap_1_1map__node_a7f0172bb4af2738f97e388d53dccb342}} 
+\index{map.map\_node@{map.map\_node}!positions@{positions}}
+\index{positions@{positions}!map.map\_node@{map.map\_node}}
+\doxysubsubsection{\texorpdfstring{positions}{positions}}
+{\footnotesize\ttfamily map.\+map\+\_\+node.\+positions}
+
+
+
+Definition at line 76 of file map.\+py.
+
+\mbox{\Hypertarget{classmap_1_1map__node_a0fe2fbea44c6891c9c2471115dc507a9}\label{classmap_1_1map__node_a0fe2fbea44c6891c9c2471115dc507a9}} 
+\index{map.map\_node@{map.map\_node}!pub@{pub}}
+\index{pub@{pub}!map.map\_node@{map.map\_node}}
+\doxysubsubsection{\texorpdfstring{pub}{pub}}
+{\footnotesize\ttfamily map.\+map\+\_\+node.\+pub}
+
+
+
+Definition at line 105 of file map.\+py.
+
+\mbox{\Hypertarget{classmap_1_1map__node_a732f6610dbee38b94a66805086ef33da}\label{classmap_1_1map__node_a732f6610dbee38b94a66805086ef33da}} 
+\index{map.map\_node@{map.map\_node}!sub\_pet@{sub\_pet}}
+\index{sub\_pet@{sub\_pet}!map.map\_node@{map.map\_node}}
+\doxysubsubsection{\texorpdfstring{sub\_pet}{sub\_pet}}
+{\footnotesize\ttfamily map.\+map\+\_\+node.\+sub\+\_\+pet}
+
+
+
+Definition at line 100 of file map.\+py.
+
+\mbox{\Hypertarget{classmap_1_1map__node_a87ee6744f6da7a02d9c4fc7a24a8f031}\label{classmap_1_1map__node_a87ee6744f6da7a02d9c4fc7a24a8f031}} 
+\index{map.map\_node@{map.map\_node}!sub\_pointer@{sub\_pointer}}
+\index{sub\_pointer@{sub\_pointer}!map.map\_node@{map.map\_node}}
+\doxysubsubsection{\texorpdfstring{sub\_pointer}{sub\_pointer}}
+{\footnotesize\ttfamily map.\+map\+\_\+node.\+sub\+\_\+pointer}
+
+
+
+Definition at line 102 of file map.\+py.
+
+\mbox{\Hypertarget{classmap_1_1map__node_a5405df0d4f9d85cf7d7e808c87c68c91}\label{classmap_1_1map__node_a5405df0d4f9d85cf7d7e808c87c68c91}} 
+\index{map.map\_node@{map.map\_node}!sub\_user@{sub\_user}}
+\index{sub\_user@{sub\_user}!map.map\_node@{map.map\_node}}
+\doxysubsubsection{\texorpdfstring{sub\_user}{sub\_user}}
+{\footnotesize\ttfamily map.\+map\+\_\+node.\+sub\+\_\+user}
+
+
+
+Definition at line 101 of file map.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/robot\+\_\+pet/scripts/\mbox{\hyperlink{map_8py}{map.\+py}}\end{DoxyCompactItemize}
