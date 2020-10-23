@@ -1,16 +1,23 @@
 #!/usr/bin/env python3
-    """User Interface
+"""Simulated User Interface
 
-    This script creates a ROS node, which simulates a user interface to
-    communicate with the robot pet.
+This script creates a ROS node, which simulates a user interface to
+communicate with the robot pet.
 
-    It calls the pet_command service to send a command which consists of a
-    string to specify the command type and a robot_pet/Point2d to specify the
-    desired position in case it is a "go_to" command.
+It calls the pet_command service to send a command which consists of a
+string to specify the command type and a robot_pet/Point2d to specify the
+desired position in case it is a "go_to" command.
 
-    We have chosen a service over a publisher, because we want to make sure no
-    message gets lost
-    """
+The programmer has chosen a service over a publisher, because we want to
+make sure no message gets lost.
+
+    Requirements:
+        The following parameters need to be set in the ros parameter server:
+            /map_width
+            /map_height
+        You can use the launchfile params.launch to set these to some 
+        default values
+"""
 
 from __future__ import print_function
 import rospy
