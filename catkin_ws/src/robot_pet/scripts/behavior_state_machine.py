@@ -3,7 +3,7 @@
 from __future__ import print_function
 
 from robot_pet.srv import PetCommand, PetCommandResponse, PetCommandRequest, GetPosition, GetPositionRequest
-from robot_pet.msg import SetTargetPositionAction, SetTargetPositionGoal, SetTargetPositionResult
+from robot_pet.msg import SetTargetPositionAction, SetTargetPositionGoal, SetTargetPositionResult, Point2dOnOff
 import rospy
 import actionlib
 import smach
@@ -146,8 +146,6 @@ class Normal(smach.State):
             rate.sleep()
 
 
-
-
 # define state Sleep
 class Sleep(smach.State):
     def __init__(self, get_position_client, pet_command_server, set_target_action_client, sleeping_timer):
@@ -194,6 +192,7 @@ class Play(smach.State):
         self.pet_command_server = pet_command_server
         self.set_target_action_client = set_target_action_client
         self.sleeping_timer = sleeping_timer
+        self.pub = rospy.Publisher('pointer_position', Point2dOnOff, queue_size=10) #define this publisher only here, because pointer position is not needed anywhere else
 
     def execute(self, userdata):
         rospy.loginfo('--- ENTERING STATE PLAY ---')
@@ -234,6 +233,13 @@ class Play(smach.State):
                     x = cmd.point.x
                     y = cmd.point.y
 
+            # Send pointer position to map
+            pointer_pos = Point2dOnOff()
+            pointer_pos.point.x = x
+            pointer_pos.point.y = y
+            pointer_pos.on =  True  #SWITCH ON
+            self.pub.publish(pointer_pos)
+
             #Go To Target
             set_target_action_client.call_action(x,y)
             
@@ -241,6 +247,10 @@ class Play(smach.State):
             while not self.set_target_action_client.ready_for_new_target:
                 rate.sleep()
 
+            # Send pointer position to map
+            pointer_pos.on =  False     #SWITCH OFF
+            self.pub.publish(pointer_pos)
+            
             #Get Persons Position
             x,y = get_position_client.call_srv("user")
             

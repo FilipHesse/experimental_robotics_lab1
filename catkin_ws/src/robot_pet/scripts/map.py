@@ -3,7 +3,7 @@
 from __future__ import print_function
 
 from robot_pet.srv import GetPosition, GetPositionResponse
-from robot_pet.msg import Point2d
+from robot_pet.msg import Point2d, Point2dOnOff
 from sensor_msgs.msg import Image
 
 import rospy
@@ -24,8 +24,11 @@ class map_node:
         self.positions = {
             "user": [0, 1],
             "house": [0, 0],
-            "pet": [4, 5]
+            "pet": [4, 5],
+            "pointer": [6, 7]
         }
+
+        self.pointer_on = False #Pointer is off in the beginning
 
         self.bridge = CvBridge()
 
@@ -36,6 +39,7 @@ class map_node:
         #Initialize subscribers 
         self.sub_pet = rospy.Subscriber("pet_position", Point2d, self.callback_pet_position)
         self.sub_user = rospy.Subscriber("user_position", Point2d, self.callback_user_position)
+        self.sub_pointer = rospy.Subscriber("pointer_position", Point2dOnOff, self.callback_pointer_position)
 
         #initialize publishers
         self.pub = rospy.Publisher('map', Image, queue_size=1)
@@ -63,6 +67,8 @@ class map_node:
         map_image[self.positions["user"][1],  self.positions["user"][0]] = (255,0,0)   #User in Blue
         map_image[self.positions["house"][1], self.positions["house"][0]] = (0,255,0)   #house in Green
         map_image[self.positions["pet"][1],   self.positions["pet"][0]] = (0,0,255)   #Pet in Red
+        if self.pointer_on:
+            map_image[self.positions["pointer"][1],   self.positions["pointer"][0]] = (255,255,0)   #Pointer in Yellow?
         self.pub.publish((self.bridge.cv2_to_imgmsg(map_image, "bgr8")))
 
     def callback_pet_position(self, data):
@@ -76,6 +82,15 @@ class map_node:
             self.positions["user"] = [data.x, data.y]
             rospy.loginfo("New user position: x={} y={}".format(self.positions["user"][0], self.positions["user"][1]))
             self.publish_map()
+
+    def callback_pointer_position(self, data):
+        self.positions["pointer"] = [data.point.x, data.point.y]
+        self.pointer_on = data.on
+        if self.pointer_on:
+            rospy.loginfo("New Pointer position: x={} y={}".format(self.positions["pointer"][0], self.positions["pointer"][1]))
+        else:
+            rospy.loginfo("Pointer was switched off")
+        self.publish_map()
 
 if __name__ == "__main__":
     rospy.init_node('map')
