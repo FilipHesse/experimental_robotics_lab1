@@ -1,14 +1,33 @@
 #!/usr/bin/env python3
+    """User Interface
 
-# Basic service client inserted
+    This script creates a ROS node, which simulates a user interface to
+    communicate with the robot pet.
+
+    It calls the pet_command service to send a command which consists of a
+    string to specify the command type and a robot_pet/Point2d to specify the
+    desired position in case it is a "go_to" command.
+
+    We have chosen a service over a publisher, because we want to make sure no
+    message gets lost
+    """
+
 from __future__ import print_function
-
-import sys
 import rospy
 from robot_pet.srv import *
 import random
 
 def pet_command_client():
+    """Service client, that creates commands to simulate the users behavior 
+
+    This function creates and sends two types of commands:
+    1) "play" 0 0 to notify the robot to go to playing mode
+    2) "go_to" x y to give the robot a target position
+    
+    Each fifth command is a play command, the other commands are go_to commands.
+    Between two commands, there is always a rondom time passing between 0.5 and 5 seconds
+    """
+
     rospy.logdebug("Wait for service pet_command to be available")
     rospy.wait_for_service('pet_command')
 
@@ -24,8 +43,9 @@ def pet_command_client():
             request = PetCommandRequest()
             request.header = rospy.Header()
 
-            #Each fivth command is play, the other commands are go_to a random place within the range
-            if (counter % 5) == 0:
+            #Each fivth command is play, the other commands are go_to a random
+            #place within the range
+            if (counter % 5) == 2:  # 2 because we do not want the very first command to be a play command
                 request.command = "play"
                 request.point.x = 0 #Values for x and y don't matter
                 request.point.y = 0 
@@ -42,10 +62,13 @@ def pet_command_client():
 
         #incement counter
         counter += 1
+
         #Wait for a random time between 0.5 and 5 seconds 
-        waiting_time = random.uniform(3, 10)
-        rospy.sleep(waiting_time)
+        rospy.sleep(random.uniform(0.5, 5))
+
 
 if __name__ == "__main__":
+    """Entry point of script
+    """
     rospy.init_node('ui')
     pet_command_client()
