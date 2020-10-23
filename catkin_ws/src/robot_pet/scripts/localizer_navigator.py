@@ -17,7 +17,7 @@ class ActionServer():
 
     def execute_cb(self, goal):
         #Wait for a random time between 1 and 5 seconds 
-        waiting_time = random.uniform(1, 5)
+        waiting_time = random.uniform(0.5, 3)
         rospy.sleep(waiting_time)
 
 

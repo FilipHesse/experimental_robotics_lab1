@@ -12,6 +12,7 @@ import rospy
 import cv2
 import numpy as np
 from cv_bridge import CvBridge, CvBridgeError
+import os
 
 
 
@@ -21,11 +22,22 @@ class map_node:
         self.map_width = rospy.get_param("/map_width")
         self.map_height = rospy.get_param("/map_height")
 
+        self.icon_size = 32
+
         self.positions = {
-            "user": [0, 1],
-            "house": [0, 0],
-            "pet": [4, 5],
-            "pointer": [6, 7]
+            "user": [rospy.get_param("/user_pos_x"), rospy.get_param("/user_pos_y")],
+            "house": [rospy.get_param("/house_pos_x"), rospy.get_param("/house_pos_y")],
+            "pet": [rospy.get_param("/pet_pos_x"), rospy.get_param("/pet_pos_y")],
+            "pointer": [0, 0]
+        }
+
+        #Read images for printing
+        os.path.join(os.path.dirname(__file__), 'relative/path/to/file/you/want')
+        self.icons = {
+            "user"   : cv2.imread(os.path.join(os.path.dirname(__file__), 'images/user.jpg'),0),
+            "house"  : cv2.imread(os.path.join(os.path.dirname(__file__), 'images/house.jpg'),0),
+            "pet"    : cv2.imread(os.path.join(os.path.dirname(__file__), 'images/pet.jpg'),0),
+            "pointer": cv2.imread(os.path.join(os.path.dirname(__file__), 'images/pointer.jpg'),0)
         }
 
         self.pointer_on = False #Pointer is off in the beginning
@@ -63,13 +75,41 @@ class map_node:
         return resp
 
     def publish_map(self):
-        map_image = 255*np.ones((self.map_height, self.map_width,3), np.uint8) #White map
-        map_image[self.positions["user"][1],  self.positions["user"][0]] = (255,0,0)   #User in Blue
-        map_image[self.positions["house"][1], self.positions["house"][0]] = (0,255,0)   #house in Green
-        map_image[self.positions["pet"][1],   self.positions["pet"][0]] = (0,0,255)   #Pet in Red
-        if self.pointer_on:
-            map_image[self.positions["pointer"][1],   self.positions["pointer"][0]] = (255,255,0)   #Pointer in Yellow?
-        self.pub.publish((self.bridge.cv2_to_imgmsg(map_image, "bgr8")))
+        version = 2
+        if version == 1:
+            map_image = 255*np.ones((self.map_height, self.map_width,3), np.uint8) #White map
+            map_image[self.positions["user"][1],  self.positions["user"][0]] = (255,0,0)   #User in Blue
+            map_image[self.positions["house"][1], self.positions["house"][0]] = (0,255,0)   #house in Green
+            map_image[self.positions["pet"][1],   self.positions["pet"][0]] = (0,0,255)   #Pet in Red
+            if self.pointer_on:
+                map_image[self.positions["pointer"][1],   self.positions["pointer"][0]] = (255,255,0)   #Pointer in Yellow?
+            self.pub.publish((self.bridge.cv2_to_imgmsg(map_image, "bgr8")))
+
+        if version == 2:
+            self.map_image = 255*np.ones((self.icon_size*self.map_height, self.icon_size*self.map_width), np.uint8) #White map
+            for icon in self.icons:
+                self.draw_icon(icon)
+            self.pub.publish((self.bridge.cv2_to_imgmsg(self.map_image)))
+
+    def draw_icon(self, icon):
+        #If pointer off, do not draw it
+        if icon == "pointer" and not self.pointer_on:
+            return
+
+        #Coordinates in Grid
+        x = self.positions[icon][0]
+        y = self.positions[icon][1]
+
+        #Pixel coordinates
+        x_start = self.icon_size * x
+        y_start = self.icon_size * y
+        x_end = x_start + self.icon_size
+        y_end = y_start + self.icon_size
+
+        #
+        self.map_image[y_start:y_end , x_start:x_end] = np.minimum(self.map_image[y_start:y_end , x_start:x_end], self.icons[icon])
+
+
 
     def callback_pet_position(self, data):
         if not self.positions["pet"] == [data.x, data.y]:

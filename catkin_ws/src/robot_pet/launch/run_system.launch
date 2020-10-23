@@ -1,7 +1,14 @@
 <launch>
 
-  <param name="map_width" type="int" value="15" />
-  <param name="map_height" type="int" value="10" />
+  <param name="map_width" type="int" value="30" />
+  <param name="map_height" type="int" value="20" />
+  
+  <param name="user_pos_x" type="int" value="14" />
+  <param name="user_pos_y" type="int" value="9" />
+  <param name="house_pos_x" type="int" value="0" />
+  <param name="house_pos_y" type="int" value="0" />
+  <param name="pet_pos_x" type="int" value="5" />
+  <param name="pet_pos_y" type="int" value="5" />
 
   <node pkg="robot_pet" name="ui" type="ui.py" output="screen"></node>
   <node pkg="robot_pet" name="user_localizer" type="user_localizer.py" output="screen"></node>

@@ -127,12 +127,17 @@ class Normal(smach.State):
         while True:
             # Check if its time to sleep
             if self.sleeping_timer.time_to_sleep:
+                while not self.set_target_action_client.ready_for_new_target:
+                    rate.sleep()
                 return 'sleeping_time'
 
             # React to user commands
             if self.pet_command_server.is_new_command_available():
                 cmd = self.pet_command_server.get_new_command()
                 if cmd.command == 'play':
+                    #First reach next position then go to sleeping state
+                    while not self.set_target_action_client.ready_for_new_target:
+                        rate.sleep()
                     return 'cmd_play'
                 if cmd.command =='go_to':
                     rospy.loginfo("Invalid command 'go_to' for state NORMAL. First say 'play' and then give go_to commands!")
@@ -250,7 +255,7 @@ class Play(smach.State):
             # Send pointer position to map
             pointer_pos.on =  False     #SWITCH OFF
             self.pub.publish(pointer_pos)
-            
+
             #Get Persons Position
             x,y = get_position_client.call_srv("user")
             
