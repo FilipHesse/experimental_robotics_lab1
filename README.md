@@ -23,16 +23,16 @@
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">YOUR_TITLE</h3>
+  <h3 align="center">ROBOT_PET</h3>
 
   <p align="center">
-    YOUR_SHORT_DESCRIPTION
+    This repository contains the first assignment of the experimental robotics laboratory course at the University of Genoa.
+    It can be used to play around with ros. It contains only simulations, so no special hardware is needed.
+    The doxygen-documantation of the code can be found here:
     <br />
-    <a href="https://github.com/FilipHesse/experimental_robotics_lab1"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/FilipHesse/experimental_robotics_lab1/docs/html"><strong> « « API » » </strong></a>
     <br />
     <br />
-    <a href="https://github.com/FilipHesse/experimental_robotics_lab1">View Demo</a>
-    ·
     <a href="https://github.com/FilipHesse/experimental_robotics_lab1/issues">Report Bug</a>
     ·
     <a href="https://github.com/FilipHesse/experimental_robotics_lab1/issues">Request Feature</a>
@@ -44,35 +44,44 @@
 <!-- TABLE OF CONTENTS -->
 ## Table of Contents
 
-* [About the Project](#about-the-project)
-  * [Built With](#built-with)
-* [Getting Started](#getting-started)
-  * [Prerequisites](#prerequisites)
-  * [Installation](#installation)
-* [Usage](#usage)
-* [Roadmap](#roadmap)
-* [Contributing](#contributing)
-* [License](#license)
-* [Contact](#contact)
-* [Acknowledgements](#acknowledgements)
+- [experimental_robotics_lab1](#experimental_robotics_lab1)
+  - [Table of Contents](#table-of-contents)
+  - [About The Project](#about-the-project)
+    - [Built With](#built-with)
+    - [Component Diagram](#component-diagram)
+    - [State Machine](#state-machine)
+  - [Getting Started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Installation](#installation)
+  - [Usage](#usage)
+  - [Roadmap](#roadmap)
+  - [Contributing](#contributing)
+  - [License](#license)
+  - [Acknowledgements](#acknowledgements)
 
 
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
-
-Here's a blank template to get started:
-**To avoid retyping too much info. Do a search and replace with your text editor for the following:**
-`FilipHesse`, `experimental_robotics_lab1`, `twitter_handle`, `email`
-
+The aim of this assignemt is to get acquainted with building finite state machines
+with using smach and designing an appropritate software architecture for the following scenario:
+A robot pet (which is simulated in our case) has 3 states: 
+* normal: The robot moves around randomly
+* play: The robot approaches the person, waits for a position command, goes to that position and comes back to the user
+* sleep: The robot returns to the position of a house  and sleeps for some time, then it wakes up and returns to normal
 
 ### Built With
 
-* []()
-* []()
-* []()
+* [ROS noetic](http://wiki.ros.org/noetic/Installation)
+* [Python3](https://www.python.org/downloads/)
+* [Smach](http://wiki.ros.org/smach)
+
+### Component Diagram
+![Component Diagram](./docs/diagrams/EXP_ASS1_UML_Component_diagram.jpg)
+
+### State Machine
+![State Diagram](./docs/diagrams/EXP_ASS1_UML_State_diagram.jpg)
 
 
 
