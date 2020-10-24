@@ -48,6 +48,7 @@
   - [Table of Contents](#table-of-contents)
   - [About The Project](#about-the-project)
     - [Built With](#built-with)
+  - [Software architecture](#software-architecture)
     - [Component Diagram](#component-diagram)
     - [State Machine](#state-machine)
   - [Getting Started](#getting-started)
@@ -77,9 +78,49 @@ A robot pet (which is simulated in our case) has 3 states:
 * [Python3](https://www.python.org/downloads/)
 * [Smach](http://wiki.ros.org/smach)
 
+## Software architecture
+
 ### Component Diagram
 ![Component Diagram](./docs/diagrams/EXP_ASS1_UML_Component_diagram.jpg)
 
+The ros package robot_pet consits of 6 components which are 
+* <strong>ui</strong> : 
+  * This node is the simulated user interface. It is a service client, that creates commands to simulate the users behavior. The programmer has chosen a service over a publisher, because we want to
+  make sure no message gets lost.
+  It creates and sends two types of commands:
+    1) "play" 0 0 to notify the robot to go to playing mode
+    2) "go_to" x y to give the robot a target position.
+  * Each fifth command is a play command, the other commands are go_to commands.
+  Between two commands, there is always a rondom time passing between 0.5 and 5 seconds.
+  * The commands are sent with a random time delay between 0.5 and 5 seconds
+* <strong>behavior_state_machine</strong> :
+  * This is the heart of robot_pet package, which defines the robots behavior
+  * Contains a finite state machine implemented in smach. The 3 states of the
+  robot pet are NORMAL, PLAY and SLEEP. The state diagram can be found below
+  * Each interface with the ROS infrastructure, such as service clients,
+  servers, action clients and publishers are implemented within separate
+  classes. All these interfaces are then passed to the smach-states while they
+  are constructed, in order to make the interfaces accessible for the states.
+* <strong>localizer_navigator</strong> :
+  * Simple ROS-node, which simulates the robot naviagation. It simulates to localize the robot and navigates to next target point
+  *  It contains an action server, that can receive a new target position. The
+  server simply waits for some time and considers the position to be reached.
+  Then the positions is published to the topic pet_position.
+  * The programmer has chosen an action server instead of a service, because the
+  action server does not block the client. This way the client can continue
+  working while the result of this action is computed.
+* <strong>user_localizer</strong> :
+  * This node simulates a user moving in the environment. It publishes the new user position at a low frequency of 0.25 Hz. Each time the position is changed, the user has not moved further than one step in x and one step in y.
+* <strong>map</strong> :
+  * The map node contains all the knowledge about the map itself, which is simply a rectangular grid with integer positions. It contains information about the dimensions of the map and the positions of all objects: pet, user, house, pointer. 
+  * The three subscribers subscribe to the variable positions of the objects in
+  the map: user, pet, pointer. The server provides the service get_position to the ros environment. The publisher publishes an image of the current map each time the map is updated.
+* <strong>rqt_image_view</strong> :
+  * That node is a built in ROS node, so it has not been implemented in this context. It is used to display the current positions of the actors:
+  
+  <kbd>
+  ![Screenshot](./docs/screenshots/visualization.png)
+  </kbd>
 ### State Machine
 ![State Diagram](./docs/diagrams/EXP_ASS1_UML_State_diagram.jpg)
 
