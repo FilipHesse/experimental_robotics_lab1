@@ -50,6 +50,9 @@
     - [Built With](#built-with)
   - [Software architecture](#software-architecture)
     - [Component Diagram](#component-diagram)
+    - [Launchfiles](#launchfiles)
+    - [Ros parameters](#ros-parameters)
+    - [Messages, services and actions](#messages-services-and-actions)
     - [State Machine](#state-machine)
   - [Getting Started](#getting-started)
     - [Prerequisites](#prerequisites)
@@ -93,6 +96,9 @@ The ros package robot_pet consits of 6 components which are
   * Each fifth command is a play command, the other commands are go_to commands.
   Between two commands, there is always a rondom time passing between 0.5 and 5 seconds.
   * The commands are sent with a random time delay between 0.5 and 5 seconds
+  * Requires ROS parameters: 
+    * /map_width
+    * /map_height
 * <strong>behavior_state_machine</strong> :
   * This is the heart of robot_pet package, which defines the robots behavior
   * Contains a finite state machine implemented in smach. The 3 states of the
@@ -101,6 +107,9 @@ The ros package robot_pet consits of 6 components which are
   servers, action clients and publishers are implemented within separate
   classes. All these interfaces are then passed to the smach-states while they
   are constructed, in order to make the interfaces accessible for the states.
+  * Requires ROS parameters: 
+    * /map_width
+    * /map_height
 * <strong>localizer_navigator</strong> :
   * Simple ROS-node, which simulates the robot naviagation. It simulates to localize the robot and navigates to next target point
   *  It contains an action server, that can receive a new target position. The
@@ -111,19 +120,102 @@ The ros package robot_pet consits of 6 components which are
   working while the result of this action is computed.
 * <strong>user_localizer</strong> :
   * This node simulates a user moving in the environment. It publishes the new user position at a low frequency of 0.25 Hz. Each time the position is changed, the user has not moved further than one step in x and one step in y.
+  * Requires ROS parameters: 
+    * /map_width
+    * /map_height
+    * /user_pos_x
+    * /user_pos_y
 * <strong>map</strong> :
   * The map node contains all the knowledge about the map itself, which is simply a rectangular grid with integer positions. It contains information about the dimensions of the map and the positions of all objects: pet, user, house, pointer. 
   * The three subscribers subscribe to the variable positions of the objects in
   the map: user, pet, pointer. The server provides the service get_position to the ros environment. The publisher publishes an image of the current map each time the map is updated.
+  * Requires ROS parameters: 
+    * /map_width
+    * /map_height
+    * /user_pos_x
+    * /user_pos_y
+    * /user_house_x
+    * /user_house_y
+    * /user_pet_x
+    * /user_pet_y
 * <strong>rqt_image_view</strong> :
-  * That node is a built in ROS node, so it has not been implemented in this context. It is used to display the current positions of the actors:
+  * That node is a built in ROS node, so it has not been implemented in this context. It is used to display the current positions of the actors: House, Pet, User, Pointer
   
-  <kbd>
-  ![Screenshot](./docs/screenshots/visualization.png)
-  </kbd>
+  ![Visualization](./docs/screenshots/visualization.png)
+
+### Launchfiles
+
+Tho launchfiles are present in the robot_pet package:
+* run_system.launch: This file launches all the above nodes with some default 
+ROS parameters.
+* params.launch: This launchfile only sets default ROS parameters. This enables the user run single nodes, that may require sompe parameters
+  
+### Ros parameters
+
+Several ROS parameters can be set to modify this software. 
+* /map_width: Dimension of rectangular map in x-direction
+* /map_height: Dimension of rectangular map in y-direction
+* /user_pos_x: Startposition of user: x
+* /user_pos_y: Startposition of user: y
+* /user_house_x: Startposition of house: x
+* /user_house_y: Startposition of house: y
+* /user_pet_x: Startposition of pet: x
+* /user_pet_y: Startposition of pet: y
+  
+### Messages, services and actions
+
+The following <strong>ROS-messages</strong> have been defined:
+* Point2d.msg: Contains x and y coordinates of a point
+```sh
+int64 x
+int64 y
+```
+* Point2d.msg: Contains a Point2d and a flag on. The additional flag specifies, if the pointer position should be displayed or not
+```sh
+robot_pet/Point2d point
+bool on
+```
+The following <strong>ROS-services</strong> have been defined:
+* GetPosition.srv: The caller specifies a string ("pet", "user", "house", "pointer") of the object. If the specified object is part of the map, the return value is success = True and the point contains the according coordinates. Else the success flag is False.
+```sh
+Header header
+string object 
+---
+bool success
+robot_pet/Point2d point
+```
+
+* PetCommand.srv: A string command ("play", "go_to") can be sent. If the command is "go_to", then a targetpoint should be specified. If the command is "play", the point is ignored.
+```sh
+Header header
+string command 
+robot_pet/Point2d point
+---
+```
+The following <strong>ROS-action</strong> has been defined:
+
+* SetTargetPositionAction: This action is used to set a target position of the robot. The caller pecifies a target, which is a Point2d (see above). When the position is reached, the action server confirms the final position by sending back the target point.
+```sh
+#Goal
+robot_pet/Point2d target
+---
+#Result
+robot_pet/Point2d final_position
+---
+#Feedback
+```
+
 ### State Machine
 ![State Diagram](./docs/diagrams/EXP_ASS1_UML_State_diagram.jpg)
-
+The above state diagram shows clearly the three states of the system:
+* NORMAL: The robot moves randomly from one position to another. It can transition to the PLAY state by receiving a user command to play. If the sleeping timer triggers sleeping time, then the state transitions to SLEEP.
+* SLEEP: The robot approaches the house and stays there, until the sleeping timer triggers, that it's time to wake up (transition "slept_enough"). Then the robot returns to the state NORMAL
+* PLAY: The robot performs the following actions in a loop:
+  1) Go to user
+  2) Wait for a command that specifies a new target
+  3) Go to new target
+  4) Repeat
+  * When a random number of games has been reached, the robot stops playing ("played_enough") and returns to the normal state. When the sleeping timer triggers time to sleep, the state transitions to SLEEP.
 
 
 <!-- GETTING STARTED -->
