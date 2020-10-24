@@ -25,6 +25,7 @@ import rospy
 import actionlib
 import smach
 import random
+import smach_ros
 
 
 class PetCommandServer:
@@ -292,7 +293,7 @@ class Normal(smach.State):
         Returns: string: outcomes "cmd_play" or "sleeping time
         """
 
-        rospy.loginfo('--- ENTERING STATE NORMAL ---')
+        rospy.loginfo('----------------------------------------------\n------------------------------ ENTERING STATE NORMAL ---\n--------------------------------------------------------------------------')
         rate = rospy.Rate(10)
         while True:
             # Check if its time to sleep
@@ -359,7 +360,7 @@ class Sleep(smach.State):
         Returns:
             string: outcome: slept_enough
         """
-        rospy.loginfo('--- ENTERING STATE SLEEP ---')
+        rospy.loginfo('----------------------------------------------\n------------------------------ ENTERING STATE SLEEP ---\n--------------------------------------------------------------------------')
         rate = rospy.Rate(10)
         
         # Robot might still be moving => wait until last target reached
@@ -442,7 +443,7 @@ class Play(smach.State):
         Returns:
             string: Outcomes of this state: "played_enough" or "sleeping_time"
         """
-        rospy.loginfo('--- ENTERING STATE PLAY ---')
+        rospy.loginfo('----------------------------------------------\n------------------------------ ENTERING STATE PLAY ---\n--------------------------------------------------------------------------')
         rate = rospy.Rate(10)
 
         games_to_play = random.randint(1,3)
