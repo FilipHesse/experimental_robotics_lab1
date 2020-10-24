@@ -553,6 +553,10 @@ if __name__ == "__main__":
                                             'sleeping_time':'SLEEP' })
 
 
+    # Create and start the introspection server
+    sis = smach_ros.IntrospectionServer('server_name', sm_top, '/SM_ROOT')
+    sis.start() 
+
     # Execute SMACH plan
     outcome = sm_top.execute()
 
