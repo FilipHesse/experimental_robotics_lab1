@@ -155,16 +155,16 @@ Project Link: [https://github.com/FilipHesse/experimental_robotics_lab1](https:/
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/FilipHesse/repo.svg?style=flat-square
-[contributors-url]: https://github.com/FilipHesse/repo/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/FilipHesse/repo.svg?style=flat-square
-[forks-url]: https://github.com/FilipHesse/repo/network/members
-[stars-shield]: https://img.shields.io/github/stars/FilipHesse/repo.svg?style=flat-square
-[stars-url]: https://github.com/FilipHesse/repo/stargazers
-[issues-shield]: https://img.shields.io/github/issues/FilipHesse/repo.svg?style=flat-square
-[issues-url]: https://github.com/FilipHesse/repo/issues
-[license-shield]: https://img.shields.io/github/license/FilipHesse/repo.svg?style=flat-square
-[license-url]: https://github.com/FilipHesse/repo/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/FilipHesse/experimental_robotics_lab1.svg?style=flat-square
+[contributors-url]: https://github.com/FilipHesse/experimental_robotics_lab1/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/FilipHesse/experimental_robotics_lab1.svg?style=flat-square
+[forks-url]: https://github.com/FilipHesse/experimental_robotics_lab1/network/members
+[stars-shield]: https://img.shields.io/github/stars/FilipHesse/experimental_robotics_lab1.svg?style=flat-square
+[stars-url]: https://github.com/FilipHesse/experimental_robotics_lab1/stargazers
+[issues-shield]: https://img.shields.io/github/issues/FilipHesse/experimental_robotics_lab1.svg?style=flat-square
+[issues-url]: https://github.com/FilipHesse/experimental_robotics_lab1/issues
+[license-shield]: https://img.shields.io/github/license/FilipHesse/experimental_robotics_lab1.svg?style=flat-square
+[license-url]: https://github.com/FilipHesse/experimental_robotics_lab1/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/FilipHesse
 [product-screenshot]: images/screenshot.png
