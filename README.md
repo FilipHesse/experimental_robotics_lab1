@@ -19,10 +19,6 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/FilipHesse/experimental_robotics_lab1">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
-
   <h3 align="center">ROBOT_PET</h3>
 
   <p align="center">
